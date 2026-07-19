@@ -3,11 +3,11 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QLabel,
     QScrollArea,
-    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
 
+from controllers.quest_controller import QuestController
 from widgets.station_card import StationCard
 
 
@@ -37,51 +37,22 @@ class Dashboard(QWidget):
         """)
 
         content_widget = QWidget()
-
         stations_grid = QGridLayout(content_widget)
         stations_grid.setContentsMargins(15, 15, 15, 15)
         stations_grid.setHorizontalSpacing(25)
         stations_grid.setVerticalSpacing(25)
 
-        stations_grid.setColumnStretch(0, 1)
-        stations_grid.setColumnStretch(1, 1)
-        stations_grid.setRowStretch(0, 1)
-        stations_grid.setRowStretch(1, 1)
+        self.station_cards = [
+            StationCard("META QUEST 1"),
+            StationCard("META QUEST 2"),
+            StationCard("META QUEST 3"),
+            StationCard("META QUEST 4"),
+        ]
 
-        station_1 = StationCard("META QUEST 1")
-        station_2 = StationCard("META QUEST 2")
-        station_3 = StationCard("META QUEST 3")
-        station_4 = StationCard("META QUEST 4")
-
-        stations_grid.addWidget(
-            station_1,
-            0,
-            0,
-            alignment=Qt.AlignmentFlag.AlignCenter,
-        )
-        stations_grid.addWidget(
-            station_2,
-            0,
-            1,
-            alignment=Qt.AlignmentFlag.AlignCenter,
-        )
-        stations_grid.addWidget(
-            station_3,
-            1,
-            0,
-            alignment=Qt.AlignmentFlag.AlignCenter,
-        )
-        stations_grid.addWidget(
-            station_4,
-            1,
-            1,
-            alignment=Qt.AlignmentFlag.AlignCenter,
-        )
-
-        content_widget.setSizePolicy(
-            QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Expanding,
-        )
+        stations_grid.addWidget(self.station_cards[0], 0, 0)
+        stations_grid.addWidget(self.station_cards[1], 0, 1)
+        stations_grid.addWidget(self.station_cards[2], 1, 0)
+        stations_grid.addWidget(self.station_cards[3], 1, 1)
 
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -92,20 +63,23 @@ class Dashboard(QWidget):
                 background-color: transparent;
                 border: none;
             }
-
-            QScrollBar:vertical {
-                background-color: #10141E;
-                width: 12px;
-                border-radius: 6px;
-            }
-
-            QScrollBar::handle:vertical {
-                background-color: #6C4DFF;
-                border-radius: 6px;
-                min-height: 30px;
-            }
         """)
 
         main_layout.addWidget(title)
         main_layout.addWidget(subtitle)
         main_layout.addWidget(scroll_area)
+
+        self.quest_controller = QuestController()
+        self.quest_controller.devices_updated.connect(
+            self.update_quest_devices
+        )
+
+    def update_quest_devices(self, devices: list):
+        for card in self.station_cards:
+            card.update_device_status(False)
+
+        for index, device in enumerate(devices[:4]):
+            self.station_cards[index].update_device_status(
+                connected=device["connected"],
+                battery=device["battery"],
+            )

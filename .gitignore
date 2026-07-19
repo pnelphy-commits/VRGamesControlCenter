@@ -1,6 +1,9 @@
 # Entorno virtual
 .venv/
 
+# Herramientas externas
+tools/
+
 # Python
 __pycache__/
 *.pyc

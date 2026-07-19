@@ -61,24 +61,12 @@ class StationCard(QFrame):
                 background-color: #6C4DFF;
             }
 
-            QPushButton#startButton:hover {
-                background-color: #8068FF;
-            }
-
             QPushButton#resetButton {
                 background-color: #C0392B;
             }
 
-            QPushButton#resetButton:hover {
-                background-color: #D64A3A;
-            }
-
             QPushButton#castButton {
                 background-color: #1677FF;
-            }
-
-            QPushButton#castButton:hover {
-                background-color: #3389FF;
             }
         """)
 
@@ -88,20 +76,18 @@ class StationCard(QFrame):
 
         title = QLabel(station_name)
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet(
-            "font-size: 22px; font-weight: bold;"
+        title.setStyleSheet("font-size: 22px; font-weight: bold;")
+
+        self.connection_label = QLabel("● DESCONECTADA")
+        self.connection_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.connection_label.setStyleSheet(
+            "color: #FF5C77; font-size: 15px; font-weight: bold;"
         )
 
-        self.status_label = QLabel("● LIBRE")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setStyleSheet(
-            "color: #3DDC84; font-size: 15px; font-weight: bold;"
-        )
-
-        self.battery_label = QLabel("🔋 100%")
+        self.battery_label = QLabel("🔋 --%")
         self.battery_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.battery_label.setStyleSheet(
-            "color: #58D68D; font-size: 14px;"
+            "color: #8992A9; font-size: 14px;"
         )
 
         self.time_label = QLabel()
@@ -111,14 +97,9 @@ class StationCard(QFrame):
         )
 
         time_buttons_layout = QHBoxLayout()
-        time_buttons_layout.setSpacing(10)
 
         for minutes in (10, 15, 30):
             button = QPushButton(f"{minutes} min")
-            button.setSizePolicy(
-                QSizePolicy.Policy.Expanding,
-                QSizePolicy.Policy.Fixed,
-            )
             button.clicked.connect(
                 lambda checked=False, value=minutes:
                 self.set_session_time(value)
@@ -126,22 +107,13 @@ class StationCard(QFrame):
             time_buttons_layout.addWidget(button)
 
         controls_layout = QHBoxLayout()
-        controls_layout.setSpacing(10)
 
         self.start_button = QPushButton("INICIAR")
         self.start_button.setObjectName("startButton")
-        self.start_button.setSizePolicy(
-            QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Fixed,
-        )
         self.start_button.clicked.connect(self.start_or_pause)
 
         reset_button = QPushButton("REINICIAR")
         reset_button.setObjectName("resetButton")
-        reset_button.setSizePolicy(
-            QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Fixed,
-        )
         reset_button.clicked.connect(self.reset_session)
 
         controls_layout.addWidget(self.start_button)
@@ -152,7 +124,7 @@ class StationCard(QFrame):
         cast_button.clicked.connect(self.open_casting)
 
         main_layout.addWidget(title)
-        main_layout.addWidget(self.status_label)
+        main_layout.addWidget(self.connection_label)
         main_layout.addWidget(self.battery_label)
         main_layout.addWidget(self.time_label)
         main_layout.addLayout(time_buttons_layout)
@@ -160,6 +132,28 @@ class StationCard(QFrame):
         main_layout.addWidget(cast_button)
 
         self.refresh_time_display()
+
+    def update_device_status(self, connected: bool, battery: int | None = None):
+        if connected:
+            self.connection_label.setText("● CONECTADA")
+            self.connection_label.setStyleSheet(
+                "color: #3DDC84; font-size: 15px; font-weight: bold;"
+            )
+
+            battery_text = f"🔋 {battery}%" if battery is not None else "🔋 --%"
+            self.battery_label.setText(battery_text)
+            self.battery_label.setStyleSheet(
+                "color: #58D68D; font-size: 14px;"
+            )
+        else:
+            self.connection_label.setText("● DESCONECTADA")
+            self.connection_label.setStyleSheet(
+                "color: #FF5C77; font-size: 15px; font-weight: bold;"
+            )
+            self.battery_label.setText("🔋 --%")
+            self.battery_label.setStyleSheet(
+                "color: #8992A9; font-size: 14px;"
+            )
 
     def open_casting(self):
         webbrowser.open("https://horizon.meta.com/casting")
@@ -169,14 +163,12 @@ class StationCard(QFrame):
         self.selected_minutes = minutes
         self.remaining_seconds = minutes * 60
         self.start_button.setText("INICIAR")
-        self.set_status("LIBRE", "#3DDC84")
         self.refresh_time_display()
 
     def start_or_pause(self):
         if self.timer.isActive():
             self.timer.stop()
             self.start_button.setText("CONTINUAR")
-            self.set_status("PAUSADO", "#F5B041")
             return
 
         if self.remaining_seconds <= 0:
@@ -184,13 +176,11 @@ class StationCard(QFrame):
 
         self.timer.start()
         self.start_button.setText("PAUSAR")
-        self.set_status("EN USO", "#FF5C77")
 
     def reset_session(self):
         self.timer.stop()
         self.remaining_seconds = self.selected_minutes * 60
         self.start_button.setText("INICIAR")
-        self.set_status("LIBRE", "#3DDC84")
         self.refresh_time_display()
 
     def update_timer(self):
@@ -201,15 +191,8 @@ class StationCard(QFrame):
         if self.remaining_seconds == 0:
             self.timer.stop()
             self.start_button.setText("INICIAR")
-            self.set_status("TIEMPO FINALIZADO", "#FF5C77")
             QApplication.beep()
 
     def refresh_time_display(self):
         minutes, seconds = divmod(self.remaining_seconds, 60)
         self.time_label.setText(f"{minutes:02d}:{seconds:02d}")
-
-    def set_status(self, text: str, color: str):
-        self.status_label.setText(f"● {text}")
-        self.status_label.setStyleSheet(
-            f"color: {color}; font-size: 15px; font-weight: bold;"
-        )
