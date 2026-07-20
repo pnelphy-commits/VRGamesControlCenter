@@ -1,14 +1,17 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QGridLayout,
+    QHBoxLayout,
     QLabel,
     QMessageBox,
+    QPushButton,
     QScrollArea,
     QVBoxLayout,
     QWidget,
 )
 
 from controllers.quest_controller import QuestController
+from ui.quest_setup_wizard import QuestSetupWizard
 from widgets.station_card import StationCard
 
 
@@ -20,14 +23,39 @@ class Dashboard(QWidget):
         main_layout.setContentsMargins(30, 20, 30, 25)
         main_layout.setSpacing(15)
 
+        header_layout = QHBoxLayout()
+
         title = QLabel("VR GAMES CONTROL CENTER")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setAlignment(Qt.AlignmentFlag.AlignLeft)
         title.setStyleSheet("""
             color: white;
             font-size: 32px;
             font-weight: bold;
             padding: 8px;
         """)
+
+        setup_button = QPushButton("CONFIGURAR META QUEST")
+        setup_button.setMinimumHeight(42)
+        setup_button.setStyleSheet("""
+            QPushButton {
+                background-color: #6C4DFF;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            QPushButton:hover {
+                background-color: #8068FF;
+            }
+        """)
+        setup_button.clicked.connect(self.open_setup_wizard)
+
+        header_layout.addWidget(title)
+        header_layout.addStretch()
+        header_layout.addWidget(setup_button)
 
         subtitle = QLabel("CONTROL DE ESTACIONES META QUEST")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -38,6 +66,7 @@ class Dashboard(QWidget):
         """)
 
         content_widget = QWidget()
+
         stations_grid = QGridLayout(content_widget)
         stations_grid.setContentsMargins(15, 15, 15, 15)
         stations_grid.setHorizontalSpacing(25)
@@ -69,7 +98,7 @@ class Dashboard(QWidget):
             }
         """)
 
-        main_layout.addWidget(title)
+        main_layout.addLayout(header_layout)
         main_layout.addWidget(subtitle)
         main_layout.addWidget(scroll_area)
 
@@ -78,26 +107,37 @@ class Dashboard(QWidget):
             self.update_quest_devices
         )
 
+    def open_setup_wizard(self):
+        wizard = QuestSetupWizard(self)
+        wizard.exec()
+
+        self.quest_controller.reload_stations()
+
     def update_quest_devices(self, devices: list):
         for card in self.station_cards:
             card.update_device_status(False)
 
-        for index, device in enumerate(devices[:4]):
-            self.station_cards[index].update_device_status(
+        for device in devices:
+            station_index = device["station_number"] - 1
+
+            if not 0 <= station_index < len(self.station_cards):
+                continue
+
+            self.station_cards[station_index].update_device_status(
                 connected=device["connected"],
                 battery=device["battery"],
-                serial=device["serial"],
+                serial=device["adb_identifier"],
                 games=device.get("games", []),
             )
 
     def launch_game(
         self,
         card: StationCard,
-        serial: str,
+        adb_identifier: str,
         component: str,
     ):
         success = self.quest_controller.launch_game(
-            serial,
+            adb_identifier,
             component,
         )
 

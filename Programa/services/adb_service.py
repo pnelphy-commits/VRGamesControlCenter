@@ -36,10 +36,26 @@ class AdbService:
 
         return devices
 
-    def get_battery_level(self, serial: str) -> int | None:
+    def get_device_serial(self, adb_identifier: str) -> str:
         result = self.run_command(
             "-s",
-            serial,
+            adb_identifier,
+            "shell",
+            "getprop",
+            "ro.serialno",
+        )
+
+        serial = result.stdout.strip()
+
+        if serial:
+            return serial
+
+        return adb_identifier.split(":", 1)[0]
+
+    def get_battery_level(self, adb_identifier: str) -> int | None:
+        result = self.run_command(
+            "-s",
+            adb_identifier,
             "shell",
             "dumpsys",
             "battery",
@@ -56,12 +72,16 @@ class AdbService:
 
         return None
 
-    def launch_activity(self, serial: str, component: str) -> bool:
+    def launch_activity(
+        self,
+        adb_identifier: str,
+        component: str,
+    ) -> bool:
         self.last_error = ""
 
         result = self.run_command(
             "-s",
-            serial,
+            adb_identifier,
             "shell",
             "am",
             "start",

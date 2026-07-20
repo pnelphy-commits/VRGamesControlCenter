@@ -5,6 +5,24 @@
             "name": "META QUEST 1",
             "serial": "2G97C5ZH9702QS",
             "ip": "10.0.0.244"
+        },
+        {
+            "station_number": 2,
+            "name": "META QUEST 2",
+            "serial": "2G97C5ZH9X023X",
+            "ip": "10.0.0.242"
+        },
+        {
+            "station_number": 3,
+            "name": "META QUEST 3",
+            "serial": "2G97C5ZHCP02BM",
+            "ip": "10.0.0.243"
+        },
+        {
+            "station_number": 4,
+            "name": "META QUEST 4",
+            "serial": "2G97C5ZH9C010K",
+            "ip": "10.0.0.245"
         }
     ]
 }
