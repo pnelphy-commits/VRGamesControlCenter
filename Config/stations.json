@@ -1,0 +1,10 @@
+{
+    "stations": [
+        {
+            "station_number": 1,
+            "name": "META QUEST 1",
+            "serial": "2G97C5ZH9702QS",
+            "ip": "10.0.0.244"
+        }
+    ]
+}
