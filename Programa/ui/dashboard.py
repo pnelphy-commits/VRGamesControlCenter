@@ -87,6 +87,7 @@ class Dashboard(QWidget):
                 connected=device["connected"],
                 battery=device["battery"],
                 serial=device["serial"],
+                games=device.get("games", []),
             )
 
     def launch_game(
@@ -95,7 +96,10 @@ class Dashboard(QWidget):
         serial: str,
         component: str,
     ):
-        success = self.quest_controller.launch_game(serial, component)
+        success = self.quest_controller.launch_game(
+            serial,
+            component,
+        )
 
         if success:
             card.begin_session()

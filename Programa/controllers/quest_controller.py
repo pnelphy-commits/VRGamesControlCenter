@@ -1,6 +1,7 @@
 from PySide6.QtCore import QObject, QTimer, Signal
 
 from services.adb_service import AdbService
+from services.game_manager import GameManager
 
 
 class QuestController(QObject):
@@ -10,6 +11,7 @@ class QuestController(QObject):
         super().__init__()
 
         self.adb = AdbService()
+        self.game_manager = GameManager(self.adb)
 
         self.timer = QTimer(self)
         self.timer.setInterval(5000)
@@ -22,11 +24,20 @@ class QuestController(QObject):
         devices = []
 
         for serial in self.adb.get_connected_devices():
+            games = self.game_manager.get_installed_games(serial)
+
             devices.append(
                 {
                     "serial": serial,
                     "battery": self.adb.get_battery_level(serial),
                     "connected": True,
+                    "games": [
+                        {
+                            "name": game.name,
+                            "component": game.component,
+                        }
+                        for game in games
+                    ],
                 }
             )
 

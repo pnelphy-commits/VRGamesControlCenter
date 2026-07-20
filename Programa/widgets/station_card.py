@@ -16,18 +16,13 @@ from PySide6.QtWidgets import (
 class StationCard(QFrame):
     launch_requested = Signal(object, str, str)
 
-    GAMES = {
-        "Onward": (
-            "com.downpourinteractive.onward/"
-            "com.unity3d.player.UnityPlayerActivity"
-        ),
-    }
-
     def __init__(self, station_name: str):
         super().__init__()
 
         self.device_serial = ""
         self.device_connected = False
+        self.games = []
+
         self.selected_minutes = 15
         self.remaining_seconds = self.selected_minutes * 60
 
@@ -118,7 +113,7 @@ class StationCard(QFrame):
         self.battery_label = QLabel("🔋 --%")
         self.battery_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.session_label = QLabel("ESTACIÓN LIBRE")
+        self.session_label = QLabel()
         self.session_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.set_session_status("ESTACIÓN LIBRE", "#8992A9")
 
@@ -129,7 +124,7 @@ class StationCard(QFrame):
         )
 
         self.game_selector = QComboBox()
-        self.game_selector.addItems(self.GAMES.keys())
+        self.game_selector.addItem("Sin juegos detectados", "")
 
         self.time_label = QLabel()
         self.time_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -138,6 +133,7 @@ class StationCard(QFrame):
         )
 
         time_buttons_layout = QHBoxLayout()
+        time_buttons_layout.setSpacing(10)
 
         for minutes in (10, 15, 30):
             button = QPushButton(f"{minutes} min")
@@ -148,6 +144,7 @@ class StationCard(QFrame):
             time_buttons_layout.addWidget(button)
 
         controls_layout = QHBoxLayout()
+        controls_layout.setSpacing(10)
 
         self.start_button = QPushButton("INICIAR")
         self.start_button.setObjectName("startButton")
@@ -183,33 +180,76 @@ class StationCard(QFrame):
         connected: bool,
         battery: int | None = None,
         serial: str = "",
+        games: list | None = None,
     ):
         self.device_connected = connected
         self.device_serial = serial if connected else ""
-
-        self.start_button.setEnabled(connected)
-        self.game_selector.setEnabled(connected)
 
         if connected:
             self.connection_label.setText("● CONECTADA")
             self.connection_label.setStyleSheet(
                 "color: #3DDC84; font-size: 15px; font-weight: bold;"
             )
+
             self.battery_label.setText(
-                f"🔋 {battery}%" if battery is not None else "🔋 --%"
+                f"🔋 {battery}%"
+                if battery is not None
+                else "🔋 --%"
             )
             self.battery_label.setStyleSheet(
                 "color: #58D68D; font-size: 14px;"
             )
+
+            self.update_games(games or [])
         else:
             self.connection_label.setText("● DESCONECTADA")
             self.connection_label.setStyleSheet(
                 "color: #FF5C77; font-size: 15px; font-weight: bold;"
             )
+
             self.battery_label.setText("🔋 --%")
             self.battery_label.setStyleSheet(
                 "color: #8992A9; font-size: 14px;"
             )
+
+            self.update_games([])
+
+        self.refresh_controls()
+
+    def update_games(self, games: list):
+        current_component = self.game_selector.currentData()
+
+        self.games = games
+        self.game_selector.blockSignals(True)
+        self.game_selector.clear()
+
+        if not games:
+            self.game_selector.addItem("Sin juegos detectados", "")
+        else:
+            for game in games:
+                self.game_selector.addItem(
+                    game["name"],
+                    game["component"],
+                )
+
+            if current_component:
+                index = self.game_selector.findData(current_component)
+
+                if index >= 0:
+                    self.game_selector.setCurrentIndex(index)
+
+        self.game_selector.blockSignals(False)
+
+    def refresh_controls(self):
+        has_games = bool(self.games)
+
+        self.game_selector.setEnabled(
+            self.device_connected and has_games
+        )
+
+        self.start_button.setEnabled(
+            self.device_connected and has_games
+        )
 
     def start_or_pause(self):
         if not self.device_connected:
@@ -225,8 +265,10 @@ class StationCard(QFrame):
             self.begin_session()
             return
 
-        game_name = self.game_selector.currentText()
-        component = self.GAMES.get(game_name, "")
+        component = self.game_selector.currentData()
+
+        if not component:
+            return
 
         self.start_button.setEnabled(False)
         self.start_button.setText("ABRIENDO...")
@@ -258,14 +300,15 @@ class StationCard(QFrame):
         self.start_button.setText("INICIAR")
         self.set_session_status("ESTACIÓN LIBRE", "#8992A9")
         self.refresh_time_display()
+        self.refresh_controls()
 
     def reset_session(self):
         self.timer.stop()
         self.remaining_seconds = self.selected_minutes * 60
-        self.start_button.setEnabled(self.device_connected)
         self.start_button.setText("INICIAR")
         self.set_session_status("ESTACIÓN LIBRE", "#8992A9")
         self.refresh_time_display()
+        self.refresh_controls()
 
     def update_timer(self):
         if self.remaining_seconds > 0:
@@ -276,6 +319,7 @@ class StationCard(QFrame):
             self.timer.stop()
             self.start_button.setText("INICIAR")
             self.set_session_status("TIEMPO FINALIZADO", "#FF5C77")
+            self.refresh_controls()
             QApplication.beep()
 
     def refresh_time_display(self):
