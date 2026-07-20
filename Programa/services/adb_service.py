@@ -5,6 +5,7 @@ from pathlib import Path
 class AdbService:
     def __init__(self):
         project_root = Path(__file__).resolve().parents[2]
+
         self.adb_path = (
             project_root
             / "tools"
@@ -12,8 +13,10 @@ class AdbService:
             / "adb.exe"
         )
 
-    def run_command(self, *args: str) -> str:
-        result = subprocess.run(
+        self.last_error = ""
+
+    def run_command(self, *args: str) -> subprocess.CompletedProcess:
+        return subprocess.run(
             [str(self.adb_path), *args],
             capture_output=True,
             text=True,
@@ -21,16 +24,11 @@ class AdbService:
             creationflags=subprocess.CREATE_NO_WINDOW,
         )
 
-        if result.returncode != 0:
-            return ""
-
-        return result.stdout.strip()
-
     def get_connected_devices(self) -> list[str]:
-        output = self.run_command("devices")
+        result = self.run_command("devices")
         devices = []
 
-        for line in output.splitlines()[1:]:
+        for line in result.stdout.splitlines()[1:]:
             parts = line.split()
 
             if len(parts) == 2 and parts[1] == "device":
@@ -39,7 +37,7 @@ class AdbService:
         return devices
 
     def get_battery_level(self, serial: str) -> int | None:
-        output = self.run_command(
+        result = self.run_command(
             "-s",
             serial,
             "shell",
@@ -47,11 +45,42 @@ class AdbService:
             "battery",
         )
 
-        for line in output.splitlines():
+        for line in result.stdout.splitlines():
             line = line.strip()
 
             if line.startswith("level:"):
-                return int(line.split(":", 1)[1].strip())
+                try:
+                    return int(line.split(":", 1)[1].strip())
+                except ValueError:
+                    return None
 
         return None
-    
+
+    def launch_activity(self, serial: str, component: str) -> bool:
+        self.last_error = ""
+
+        result = self.run_command(
+            "-s",
+            serial,
+            "shell",
+            "am",
+            "start",
+            "-n",
+            component,
+        )
+
+        output = f"{result.stdout}\n{result.stderr}".strip()
+
+        if result.returncode != 0:
+            self.last_error = output or "ADB devolvió un error."
+            return False
+
+        if "Error type" in output or "does not exist" in output:
+            self.last_error = output
+            return False
+
+        if "Starting:" not in output and "Warning:" not in output:
+            self.last_error = output or "No se recibió confirmación de inicio."
+            return False
+
+        return True

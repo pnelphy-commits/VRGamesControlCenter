@@ -16,20 +16,32 @@ class QuestController(QObject):
         self.timer.timeout.connect(self.refresh_devices)
         self.timer.start()
 
-        self.refresh_devices()
+        QTimer.singleShot(200, self.refresh_devices)
 
     def refresh_devices(self):
         devices = []
 
         for serial in self.adb.get_connected_devices():
-            battery = self.adb.get_battery_level(serial)
-
             devices.append(
                 {
                     "serial": serial,
-                    "battery": battery,
+                    "battery": self.adb.get_battery_level(serial),
                     "connected": True,
                 }
             )
 
         self.devices_updated.emit(devices)
+
+    def launch_game(self, serial: str, component: str) -> bool:
+        if not serial:
+            self.adb.last_error = "La Meta Quest no tiene un serial asignado."
+            return False
+
+        if not component:
+            self.adb.last_error = "No se seleccionó un juego válido."
+            return False
+
+        return self.adb.launch_activity(serial, component)
+
+    def get_last_error(self) -> str:
+        return self.adb.last_error

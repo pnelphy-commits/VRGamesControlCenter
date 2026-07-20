@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QGridLayout,
     QLabel,
+    QMessageBox,
     QScrollArea,
     QVBoxLayout,
     QWidget,
@@ -49,6 +50,9 @@ class Dashboard(QWidget):
             StationCard("META QUEST 4"),
         ]
 
+        for card in self.station_cards:
+            card.launch_requested.connect(self.launch_game)
+
         stations_grid.addWidget(self.station_cards[0], 0, 0)
         stations_grid.addWidget(self.station_cards[1], 0, 1)
         stations_grid.addWidget(self.station_cards[2], 1, 0)
@@ -82,4 +86,30 @@ class Dashboard(QWidget):
             self.station_cards[index].update_device_status(
                 connected=device["connected"],
                 battery=device["battery"],
+                serial=device["serial"],
             )
+
+    def launch_game(
+        self,
+        card: StationCard,
+        serial: str,
+        component: str,
+    ):
+        success = self.quest_controller.launch_game(serial, component)
+
+        if success:
+            card.begin_session()
+            return
+
+        card.launch_failed()
+
+        error = self.quest_controller.get_last_error()
+
+        QMessageBox.warning(
+            self,
+            "No se pudo abrir el juego",
+            error or (
+                "Verifica que la Meta Quest esté conectada "
+                "y que el juego esté instalado."
+            ),
+        )
