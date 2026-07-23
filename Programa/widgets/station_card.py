@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 
 class StationCard(QFrame):
     launch_requested = Signal(object, str, str)
+    finish_requested = Signal(object, str)
 
     def __init__(self, station_name: str):
         super().__init__()
@@ -22,6 +23,7 @@ class StationCard(QFrame):
         self.device_serial = ""
         self.device_connected = False
         self.games = []
+        self.active_component = ""
 
         self.selected_minutes = 15
         self.remaining_seconds = self.selected_minutes * 60
@@ -90,7 +92,7 @@ class StationCard(QFrame):
                 background-color: #6C4DFF;
             }
 
-            QPushButton#resetButton {
+            QPushButton#finishButton {
                 background-color: #C0392B;
             }
 
@@ -105,31 +107,51 @@ class StationCard(QFrame):
 
         title = QLabel(station_name)
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet("font-size: 22px; font-weight: bold;")
+        title.setStyleSheet(
+            "font-size: 22px; font-weight: bold;"
+        )
 
         self.connection_label = QLabel("● DESCONECTADA")
-        self.connection_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.connection_label.setAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
 
         self.battery_label = QLabel("🔋 --%")
-        self.battery_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.battery_label.setAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
 
         self.session_label = QLabel()
-        self.session_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.set_session_status("ESTACIÓN LIBRE", "#8992A9")
+        self.session_label.setAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
+        self.set_session_status(
+            "ESTACIÓN LIBRE",
+            "#8992A9",
+        )
 
         game_label = QLabel("JUEGO")
         game_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         game_label.setStyleSheet(
-            "color: #8992A9; font-size: 12px; font-weight: bold;"
+            "color: #8992A9; "
+            "font-size: 12px; "
+            "font-weight: bold;"
         )
 
         self.game_selector = QComboBox()
-        self.game_selector.addItem("Sin juegos detectados", "")
+        self.game_selector.addItem(
+            "Sin juegos detectados",
+            "",
+        )
 
         self.time_label = QLabel()
-        self.time_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.time_label.setAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
         self.time_label.setStyleSheet(
-            "font-size: 44px; font-weight: bold; color: #A98BFF;"
+            "font-size: 44px; "
+            "font-weight: bold; "
+            "color: #A98BFF;"
         )
 
         time_buttons_layout = QHBoxLayout()
@@ -148,14 +170,18 @@ class StationCard(QFrame):
 
         self.start_button = QPushButton("INICIAR")
         self.start_button.setObjectName("startButton")
-        self.start_button.clicked.connect(self.start_or_pause)
+        self.start_button.clicked.connect(
+            self.start_or_pause
+        )
 
-        finish_button = QPushButton("FINALIZAR")
-        finish_button.setObjectName("resetButton")
-        finish_button.clicked.connect(self.reset_session)
+        self.finish_button = QPushButton("FINALIZAR")
+        self.finish_button.setObjectName("finishButton")
+        self.finish_button.clicked.connect(
+            self.request_finish_session
+        )
 
         controls_layout.addWidget(self.start_button)
-        controls_layout.addWidget(finish_button)
+        controls_layout.addWidget(self.finish_button)
 
         cast_button = QPushButton("TRANSMITIR")
         cast_button.setObjectName("castButton")
@@ -188,7 +214,9 @@ class StationCard(QFrame):
         if connected:
             self.connection_label.setText("● CONECTADA")
             self.connection_label.setStyleSheet(
-                "color: #3DDC84; font-size: 15px; font-weight: bold;"
+                "color: #3DDC84; "
+                "font-size: 15px; "
+                "font-weight: bold;"
             )
 
             self.battery_label.setText(
@@ -204,7 +232,9 @@ class StationCard(QFrame):
         else:
             self.connection_label.setText("● DESCONECTADA")
             self.connection_label.setStyleSheet(
-                "color: #FF5C77; font-size: 15px; font-weight: bold;"
+                "color: #FF5C77; "
+                "font-size: 15px; "
+                "font-weight: bold;"
             )
 
             self.battery_label.setText("🔋 --%")
@@ -217,14 +247,19 @@ class StationCard(QFrame):
         self.refresh_controls()
 
     def update_games(self, games: list):
-        current_component = self.game_selector.currentData()
+        current_component = (
+            self.game_selector.currentData()
+        )
 
         self.games = games
         self.game_selector.blockSignals(True)
         self.game_selector.clear()
 
         if not games:
-            self.game_selector.addItem("Sin juegos detectados", "")
+            self.game_selector.addItem(
+                "Sin juegos detectados",
+                "",
+            )
         else:
             for game in games:
                 self.game_selector.addItem(
@@ -233,10 +268,14 @@ class StationCard(QFrame):
                 )
 
             if current_component:
-                index = self.game_selector.findData(current_component)
+                index = self.game_selector.findData(
+                    current_component
+                )
 
                 if index >= 0:
-                    self.game_selector.setCurrentIndex(index)
+                    self.game_selector.setCurrentIndex(
+                        index
+                    )
 
         self.game_selector.blockSignals(False)
 
@@ -247,9 +286,15 @@ class StationCard(QFrame):
             self.device_connected and has_games
         )
 
-        self.start_button.setEnabled(
-            self.device_connected and has_games
-        )
+        if self.start_button.text() != "ABRIENDO...":
+            self.start_button.setEnabled(
+                self.device_connected and has_games
+            )
+
+        if self.finish_button.text() != "FINALIZANDO...":
+            self.finish_button.setEnabled(
+                self.device_connected
+            )
 
     def start_or_pause(self):
         if not self.device_connected:
@@ -258,7 +303,10 @@ class StationCard(QFrame):
         if self.timer.isActive():
             self.timer.stop()
             self.start_button.setText("CONTINUAR")
-            self.set_session_status("SESIÓN PAUSADA", "#F5B041")
+            self.set_session_status(
+                "SESIÓN PAUSADA",
+                "#F5B041",
+            )
             return
 
         if self.start_button.text() == "CONTINUAR":
@@ -269,6 +317,8 @@ class StationCard(QFrame):
 
         if not component:
             return
+
+        self.active_component = component
 
         self.start_button.setEnabled(False)
         self.start_button.setText("ABRIENDO...")
@@ -281,32 +331,90 @@ class StationCard(QFrame):
 
     def begin_session(self):
         if self.remaining_seconds <= 0:
-            self.remaining_seconds = self.selected_minutes * 60
+            self.remaining_seconds = (
+                self.selected_minutes * 60
+            )
 
         self.timer.start()
         self.start_button.setEnabled(True)
         self.start_button.setText("PAUSAR")
-        self.set_session_status("SESIÓN EN CURSO", "#FF5C77")
+
+        self.set_session_status(
+            "SESIÓN EN CURSO",
+            "#FF5C77",
+        )
 
     def launch_failed(self):
+        self.active_component = ""
         self.start_button.setEnabled(True)
         self.start_button.setText("INICIAR")
-        self.set_session_status("ERROR AL ABRIR JUEGO", "#FF5C77")
+
+        self.set_session_status(
+            "ERROR AL ABRIR JUEGO",
+            "#FF5C77",
+        )
+
+    def request_finish_session(self):
+        if not self.device_connected:
+            return
+
+        self.timer.stop()
+
+        self.start_button.setEnabled(False)
+        self.finish_button.setEnabled(False)
+        self.finish_button.setText("FINALIZANDO...")
+
+        self.set_session_status(
+            "CERRANDO APLICACIONES...",
+            "#F5B041",
+        )
+
+        self.finish_requested.emit(
+            self,
+            self.device_serial,
+        )
+
+    def finish_completed(self):
+        self.active_component = ""
+        self.remaining_seconds = (
+            self.selected_minutes * 60
+        )
+
+        self.start_button.setText("INICIAR")
+        self.finish_button.setText("FINALIZAR")
+
+        self.set_session_status(
+            "ESTACIÓN LIBRE",
+            "#8992A9",
+        )
+
+        self.refresh_time_display()
+        self.refresh_controls()
+
+    def finish_failed(self):
+        self.start_button.setText("INICIAR")
+        self.finish_button.setText("FINALIZAR")
+
+        self.set_session_status(
+            "ERROR AL FINALIZAR",
+            "#FF5C77",
+        )
+
+        self.refresh_controls()
 
     def set_session_time(self, minutes: int):
         self.timer.stop()
         self.selected_minutes = minutes
         self.remaining_seconds = minutes * 60
-        self.start_button.setText("INICIAR")
-        self.set_session_status("ESTACIÓN LIBRE", "#8992A9")
-        self.refresh_time_display()
-        self.refresh_controls()
+        self.active_component = ""
 
-    def reset_session(self):
-        self.timer.stop()
-        self.remaining_seconds = self.selected_minutes * 60
         self.start_button.setText("INICIAR")
-        self.set_session_status("ESTACIÓN LIBRE", "#8992A9")
+
+        self.set_session_status(
+            "ESTACIÓN LIBRE",
+            "#8992A9",
+        )
+
         self.refresh_time_display()
         self.refresh_controls()
 
@@ -318,19 +426,38 @@ class StationCard(QFrame):
         if self.remaining_seconds == 0:
             self.timer.stop()
             self.start_button.setText("INICIAR")
-            self.set_session_status("TIEMPO FINALIZADO", "#FF5C77")
+
+            self.set_session_status(
+                "TIEMPO FINALIZADO",
+                "#FF5C77",
+            )
+
             self.refresh_controls()
             QApplication.beep()
 
     def refresh_time_display(self):
-        minutes, seconds = divmod(self.remaining_seconds, 60)
-        self.time_label.setText(f"{minutes:02d}:{seconds:02d}")
+        minutes, seconds = divmod(
+            self.remaining_seconds,
+            60,
+        )
 
-    def set_session_status(self, text: str, color: str):
+        self.time_label.setText(
+            f"{minutes:02d}:{seconds:02d}"
+        )
+
+    def set_session_status(
+        self,
+        text: str,
+        color: str,
+    ):
         self.session_label.setText(text)
         self.session_label.setStyleSheet(
-            f"color: {color}; font-size: 13px; font-weight: bold;"
+            f"color: {color}; "
+            "font-size: 13px; "
+            "font-weight: bold;"
         )
 
     def open_casting(self):
-        webbrowser.open("https://horizon.meta.com/casting")
+        webbrowser.open(
+            "https://horizon.meta.com/casting"
+        )
