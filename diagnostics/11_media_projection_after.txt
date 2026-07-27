@@ -1,0 +1,11 @@
+COMANDO:
+adb -s 10.0.0.245:5555 shell dumpsys media_projection
+
+STDOUT:
+MEDIA PROJECTION MANAGER (dumpsys media_projection)
+Media Projection: 
+null
+
+
+STDERR:
+

@@ -1,4 +1,10 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import (
+    QObject,
+    QThread,
+    Qt,
+    Signal,
+    Slot,
+)
 from PySide6.QtWidgets import (
     QGridLayout,
     QHBoxLayout,
@@ -11,60 +17,122 @@ from PySide6.QtWidgets import (
 )
 
 from controllers.quest_controller import QuestController
+from services.cast_service import CastService
+from services.display_manager import DisplayManager
+from services.network_service import NetworkService
 from ui.quest_setup_wizard import QuestSetupWizard
-from ui.station_preparation import (
-    StationPreparationDialog,
-)
+from ui.station_preparation import StationPreparationDialog
 from widgets.station_card import StationCard
+from widgets.top_bar import TopBar
+
+
+class CastWorker(QObject):
+    finished = Signal(
+        bool,
+        str,
+        object,
+    )
+
+    def __init__(
+        self,
+        card: StationCard,
+        adb_identifier: str,
+        receiver_name: str,
+        television_ip: str,
+    ):
+        super().__init__()
+
+        self.card = card
+        self.adb_identifier = adb_identifier
+        self.receiver_name = receiver_name
+        self.television_ip = television_ip
+
+    @Slot()
+    def run(self):
+        if self.television_ip:
+            online, message = (
+                NetworkService.ping_device(
+                    self.television_ip,
+                    timeout_seconds=2,
+                )
+            )
+
+            if not online:
+                self.finished.emit(
+                    False,
+                    (
+                        "La televisión no respondió "
+                        "en la red.\n\n"
+                        f"{message}"
+                    ),
+                    self.card,
+                )
+                return
+
+        cast_service = CastService()
+
+        success, message = (
+            cast_service.start_casting(
+                device_identifier=(
+                    self.adb_identifier
+                ),
+                receiver_name=(
+                    self.receiver_name
+                ),
+            )
+        )
+
+        self.finished.emit(
+            success,
+            message,
+            self.card,
+        )
 
 
 class Dashboard(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.cast_threads = {}
+
         main_layout = QVBoxLayout(self)
+
         main_layout.setContentsMargins(
-            30,
             20,
-            30,
-            25,
+            16,
+            20,
+            18,
         )
-        main_layout.setSpacing(15)
 
-        header_layout = QHBoxLayout()
+        main_layout.setSpacing(14)
 
-        title = QLabel(
-            "VR GAMES CONTROL CENTER"
+        self.top_bar = TopBar()
+
+        actions_layout = QHBoxLayout()
+        actions_layout.setSpacing(10)
+
+        section_title = QLabel(
+            "ESTACIONES META QUEST"
         )
-        title.setAlignment(
-            Qt.AlignmentFlag.AlignLeft
-        )
-        title.setStyleSheet("""
-            color: white;
-            font-size: 32px;
+
+        section_title.setStyleSheet(
+            """
+            color: #FFFFFF;
+            font-size: 18px;
             font-weight: bold;
-            padding: 8px;
-        """)
+            letter-spacing: 2px;
+            """
+        )
 
         prepare_button = QPushButton(
             "PREPARAR ESTACIONES"
         )
-        prepare_button.setMinimumHeight(42)
-        prepare_button.setStyleSheet("""
-            QPushButton {
-                background-color: #1677FF;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 8px 14px;
-                font-size: 14px;
-                font-weight: bold;
-            }
 
-            QPushButton:hover {
-                background-color: #2D8CFF;
-            }
-        """)
+        prepare_button.setProperty(
+            "buttonType",
+            "primary",
+        )
+
         prepare_button.clicked.connect(
             self.open_station_preparation
         )
@@ -72,56 +140,45 @@ class Dashboard(QWidget):
         setup_button = QPushButton(
             "CONFIGURAR META QUEST"
         )
-        setup_button.setMinimumHeight(42)
-        setup_button.setStyleSheet("""
-            QPushButton {
-                background-color: #6C4DFF;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 8px 14px;
-                font-size: 14px;
-                font-weight: bold;
-            }
 
-            QPushButton:hover {
-                background-color: #8068FF;
-            }
-        """)
+        setup_button.setProperty(
+            "buttonType",
+            "danger",
+        )
+
         setup_button.clicked.connect(
             self.open_setup_wizard
         )
 
-        header_layout.addWidget(title)
-        header_layout.addStretch()
-        header_layout.addWidget(prepare_button)
-        header_layout.addWidget(setup_button)
+        actions_layout.addWidget(
+            section_title
+        )
 
-        subtitle = QLabel(
-            "CONTROL DE ESTACIONES META QUEST"
+        actions_layout.addStretch()
+
+        actions_layout.addWidget(
+            prepare_button
         )
-        subtitle.setAlignment(
-            Qt.AlignmentFlag.AlignCenter
+
+        actions_layout.addWidget(
+            setup_button
         )
-        subtitle.setStyleSheet("""
-            color: #8992A9;
-            font-size: 15px;
-            font-weight: bold;
-        """)
 
         content_widget = QWidget()
 
         stations_grid = QGridLayout(
             content_widget
         )
+
         stations_grid.setContentsMargins(
-            15,
-            15,
-            15,
-            15,
+            0,
+            4,
+            0,
+            4,
         )
-        stations_grid.setHorizontalSpacing(25)
-        stations_grid.setVerticalSpacing(25)
+
+        stations_grid.setHorizontalSpacing(18)
+        stations_grid.setVerticalSpacing(18)
 
         self.station_cards = [
             StationCard("META QUEST 1"),
@@ -139,21 +196,28 @@ class Dashboard(QWidget):
                 self.finish_session
             )
 
+            card.cast_requested.connect(
+                self.start_casting
+            )
+
         stations_grid.addWidget(
             self.station_cards[0],
             0,
             0,
         )
+
         stations_grid.addWidget(
             self.station_cards[1],
             0,
             1,
         )
+
         stations_grid.addWidget(
             self.station_cards[2],
             1,
             0,
         )
+
         stations_grid.addWidget(
             self.station_cards[3],
             1,
@@ -162,22 +226,99 @@ class Dashboard(QWidget):
 
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
+
         scroll_area.setFrameShape(
             QScrollArea.Shape.NoFrame
         )
-        scroll_area.setWidget(content_widget)
-        scroll_area.setStyleSheet("""
-            QScrollArea {
-                background-color: transparent;
-                border: none;
-            }
-        """)
 
-        main_layout.addLayout(header_layout)
-        main_layout.addWidget(subtitle)
-        main_layout.addWidget(scroll_area)
+        scroll_area.setWidget(
+            content_widget
+        )
 
-        self.quest_controller = QuestController()
+        footer_layout = QHBoxLayout()
+
+        footer_brand = QLabel(
+            "VR GAMES BÁVARO"
+        )
+
+        footer_brand.setStyleSheet(
+            """
+            color: #00A8FF;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            """
+        )
+
+        footer_version = QLabel(
+            "VERSIÓN 1.0.0"
+        )
+
+        footer_version.setAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
+
+        footer_version.setStyleSheet(
+            """
+            color: #8290A8;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            """
+        )
+
+        footer_author = QLabel(
+            "POWERED BY NELPHY PEÑA"
+        )
+
+        footer_author.setAlignment(
+            Qt.AlignmentFlag.AlignRight
+        )
+
+        footer_author.setStyleSheet(
+            """
+            color: #FF2BC2;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            """
+        )
+
+        footer_layout.addWidget(
+            footer_brand
+        )
+
+        footer_layout.addStretch()
+
+        footer_layout.addWidget(
+            footer_version
+        )
+
+        footer_layout.addStretch()
+
+        footer_layout.addWidget(
+            footer_author
+        )
+
+        main_layout.addWidget(
+            self.top_bar
+        )
+
+        main_layout.addLayout(
+            actions_layout
+        )
+
+        main_layout.addWidget(
+            scroll_area
+        )
+
+        main_layout.addLayout(
+            footer_layout
+        )
+
+        self.quest_controller = (
+            QuestController()
+        )
 
         self.quest_controller.devices_updated.connect(
             self.update_quest_devices
@@ -190,6 +331,7 @@ class Dashboard(QWidget):
         )
 
         dialog.exec()
+
         self.quest_controller.refresh_devices()
 
     def open_setup_wizard(self):
@@ -202,8 +344,14 @@ class Dashboard(QWidget):
         self,
         devices: list,
     ):
+        self.top_bar.update_metrics(
+            devices
+        )
+
         for card in self.station_cards:
-            card.update_device_status(False)
+            card.update_device_status(
+                False
+            )
 
         for device in devices:
             station_index = (
@@ -211,7 +359,8 @@ class Dashboard(QWidget):
             )
 
             if not (
-                0 <= station_index
+                0
+                <= station_index
                 < len(self.station_cards)
             ):
                 continue
@@ -219,11 +368,172 @@ class Dashboard(QWidget):
             self.station_cards[
                 station_index
             ].update_device_status(
-                connected=device["connected"],
+                connected=(
+                    device["connected"]
+                ),
                 battery=device["battery"],
-                serial=device["adb_identifier"],
-                games=device.get("games", []),
+                serial=(
+                    device["adb_identifier"]
+                ),
+                games=device.get(
+                    "games",
+                    [],
+                ),
             )
+
+    def start_casting(
+        self,
+        card: StationCard,
+        station_number: int,
+        station_name: str,
+        adb_identifier: str,
+    ):
+        if not adb_identifier:
+            card.cast_failed()
+
+            QMessageBox.warning(
+                self,
+                "Meta desconectada",
+                (
+                    f"{station_name} no está "
+                    "conectada por ADB."
+                ),
+            )
+            return
+
+        display_manager = DisplayManager()
+
+        display = (
+            display_manager.get_display_for_station(
+                station_number
+            )
+        )
+
+        if not display:
+            card.cast_failed()
+
+            QMessageBox.warning(
+                self,
+                "TV no asignada",
+                (
+                    "No hay una televisión asignada "
+                    f"a {station_name}."
+                ),
+            )
+            return
+
+        receiver_name = (
+            display.get(
+                "device_name",
+                "",
+            ).strip()
+        )
+
+        television_ip = (
+            display.get(
+                "ip",
+                "",
+            ).strip()
+        )
+
+        if not receiver_name:
+            card.cast_failed()
+
+            QMessageBox.warning(
+                self,
+                "Nombre Chromecast pendiente",
+                (
+                    "Configura el nombre exacto "
+                    "que aparece dentro de la Meta Quest."
+                ),
+            )
+            return
+
+        if station_number in self.cast_threads:
+            QMessageBox.information(
+                self,
+                "Transmisión en proceso",
+                (
+                    f"{station_name} ya está "
+                    "intentando conectarse."
+                ),
+            )
+            return
+
+        card.cast_connecting()
+
+        thread = QThread(self)
+
+        worker = CastWorker(
+            card=card,
+            adb_identifier=adb_identifier,
+            receiver_name=receiver_name,
+            television_ip=television_ip,
+        )
+
+        worker.moveToThread(thread)
+
+        thread.started.connect(
+            worker.run
+        )
+
+        worker.finished.connect(
+            self.cast_finished
+        )
+
+        worker.finished.connect(
+            thread.quit
+        )
+
+        worker.finished.connect(
+            worker.deleteLater
+        )
+
+        thread.finished.connect(
+            thread.deleteLater
+        )
+
+        thread.finished.connect(
+            lambda number=station_number:
+            self.cast_threads.pop(
+                number,
+                None,
+            )
+        )
+
+        self.cast_threads[
+            station_number
+        ] = {
+            "thread": thread,
+            "worker": worker,
+        }
+
+        thread.start()
+
+    @Slot(bool, str, object)
+    def cast_finished(
+        self,
+        success: bool,
+        message: str,
+        card: StationCard,
+    ):
+        if success:
+            card.cast_started()
+
+            QMessageBox.information(
+                self,
+                "Transmisión iniciada",
+                message,
+            )
+            return
+
+        card.cast_failed()
+
+        QMessageBox.warning(
+            self,
+            "No se pudo transmitir",
+            message,
+        )
 
     def launch_game(
         self,

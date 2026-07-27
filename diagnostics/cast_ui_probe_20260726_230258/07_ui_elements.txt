@@ -1,0 +1,419 @@
+ELEMENTO 1
+Texto: -
+Descripción: -
+Resource ID: -
+Clase: android.widget.FrameLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [0,0][480,800]
+
+ELEMENTO 2
+Texto: -
+Descripción: -
+Resource ID: -
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [0,0][480,800]
+
+ELEMENTO 3
+Texto: -
+Descripción: -
+Resource ID: android:id/content
+Clase: android.widget.FrameLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [0,0][480,800]
+
+ELEMENTO 4
+Texto: -
+Descripción: -
+Resource ID: -
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [0,0][480,800]
+
+ELEMENTO 5
+Texto: -
+Descripción: -
+Resource ID: -
+Clase: com.oculus.ocui.OCMultiLayerContainerFrame
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [0,0][480,800]
+
+ELEMENTO 6
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/oc_dialog_scrim
+Clase: android.widget.FrameLayout
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [0,0][480,800]
+
+ELEMENTO 7
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/oc_dialog_view_stub
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [0,30][480,770]
+
+ELEMENTO 8
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/oc_dialog_view
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [0,30][480,770]
+
+ELEMENTO 9
+Texto: Transmitir en
+Descripción: -
+Resource ID: com.oculus.metacam:id/oc_dialog_title
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [40,70][440,100]
+
+ELEMENTO 10
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/oc_dialog_child_stub
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [40,115][440,580]
+
+ELEMENTO 11
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/local_stream_start_dialog_scroll_container
+Clase: android.widget.ScrollView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [40,115][440,580]
+
+ELEMENTO 12
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/local_stream_start_dialog_layout
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [40,115][440,580]
+
+ELEMENTO 13
+Texto: Comparte con otras personas lo que ves en el visor.
+Descripción: -
+Resource ID: com.oculus.metacam:id/dialog_body_text
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,115][440,135]
+
+ELEMENTO 14
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/nearby_devices_subtitle_layout
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [40,165][440,196]
+
+ELEMENTO 15
+Texto: Dispositivos cercanos
+Descripción: -
+Resource ID: com.oculus.metacam:id/nearby_devices_subtitle
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,170][440,196]
+
+ELEMENTO 16
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/progress_spinner
+Clase: android.widget.FrameLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [385,166][415,196]
+
+ELEMENTO 17
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/progress_spinner
+Clase: android.view.View
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [385,166][415,196]
+
+ELEMENTO 18
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_lists_layout
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [40,196][440,481]
+
+ELEMENTO 19
+Texto: -
+Descripción: Celular, App de Meta Horizon para celulares
+Resource ID: com.oculus.metacam:id/list_item_container
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [45,201][435,266]
+
+ELEMENTO 20
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/icon
+Clase: android.widget.ImageView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,219][85,249]
+
+ELEMENTO 21
+Texto: Celular
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_name
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,211][166,236]
+
+ELEMENTO 22
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_text_container
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,236][361,256]
+
+ELEMENTO 23
+Texto: App de Meta Horizon para celulares
+Descripción: App de Meta Horizon para celulares
+Resource ID: com.oculus.metacam:id/device_text
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,236][346,256]
+
+ELEMENTO 24
+Texto: -
+Descripción: Web, horizon punto meta punto com barra casting
+Resource ID: com.oculus.metacam:id/list_item_container
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [45,276][435,341]
+
+ELEMENTO 25
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/icon
+Clase: android.widget.ImageView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,294][85,324]
+
+ELEMENTO 26
+Texto: Web
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_name
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,286][144,311]
+
+ELEMENTO 27
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_text_container
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,311][299,331]
+
+ELEMENTO 28
+Texto: horizon.meta.com/casting
+Descripción: horizon punto meta punto com barra casting
+Resource ID: com.oculus.metacam:id/device_text
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,311][284,331]
+
+ELEMENTO 29
+Texto: -
+Descripción: Meta 01, Chromecast
+Resource ID: com.oculus.metacam:id/list_item_container
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [45,351][435,416]
+
+ELEMENTO 30
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/icon
+Clase: android.widget.ImageView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,369][85,399]
+
+ELEMENTO 31
+Texto: Meta 01
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_name
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,361][175,386]
+
+ELEMENTO 32
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/device_text_container
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,386][203,406]
+
+ELEMENTO 33
+Texto: Chromecast
+Descripción: Chromecast
+Resource ID: com.oculus.metacam:id/device_text
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,386][188,406]
+
+ELEMENTO 34
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/list_item_container
+Clase: android.view.ViewGroup
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [45,426][435,476]
+
+ELEMENTO 35
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/icon
+Clase: android.widget.ImageView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,436][85,466]
+
+ELEMENTO 36
+Texto: ¿No ves tu dispositivo?
+Descripción: -
+Resource ID: com.oculus.metacam:id/troubleshooting_text
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [105,439][420,464]
+
+ELEMENTO 37
+Texto: App de streaming en vivo
+Descripción: -
+Resource ID: com.oculus.metacam:id/live_and_calling_apps_subtitle
+Clase: android.widget.TextView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [55,506][440,532]
+
+ELEMENTO 38
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/screen_share_apps_layout
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [50,532][440,580]
+
+ELEMENTO 39
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/live_layout
+Clase: android.widget.LinearLayout
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [50,532][140,580]
+
+ELEMENTO 40
+Texto: -
+Descripción: -
+Resource ID: com.oculus.metacam:id/live_icon
+Clase: android.widget.ImageView
+Paquete: com.oculus.metacam
+Clickable: false
+Enabled: true
+Bounds: [75,537][115,577]
+
+ELEMENTO 41
+Texto: Siguiente
+Descripción: Botón “Siguiente” para iniciar la transmisión al dispositivo seleccionado
+Resource ID: com.oculus.metacam:id/oc_dialog_primary_button
+Clase: android.widget.Button
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: false
+Bounds: [40,610][440,665]
+
+ELEMENTO 42
+Texto: Cancelar
+Descripción: -
+Resource ID: com.oculus.metacam:id/oc_dialog_secondary_button
+Clase: android.widget.Button
+Paquete: com.oculus.metacam
+Clickable: true
+Enabled: true
+Bounds: [40,675][440,730]

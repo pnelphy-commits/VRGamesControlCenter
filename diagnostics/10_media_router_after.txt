@@ -1,0 +1,39 @@
+COMANDO:
+adb -s 10.0.0.245:5555 shell dumpsys media_router
+
+STDOUT:
+MEDIA ROUTER SERVICE (dumpsys media_router)
+
+Global state
+  mCurrentUserId=0
+
+User 0
+  Client android (pid 1515)
+    mTrusted=true
+    mRouteTypes=0x0
+    mActiveScan=false
+    mSelectedRouteId=default_audio_route
+  State
+  mRouterState=null
+  Handler
+    mRunning=true
+    mDiscoveryMode=0
+    mSelectedRouteRecord=null
+    mConnectionPhase=-1
+    mConnectionTimeoutReason=0
+    mConnectionTimeoutStartTime=<n/a>
+  Watcher
+    mUserId=0
+    mRunning=true
+    mProviders.size()=0
+    <no providers>
+
+MediaRouter2ServiceImpl
+  mNextRouterOrManagerId=1
+  mCurrentActiveUserId=0
+  UserRecords:
+    <no user records>
+
+
+STDERR:
+

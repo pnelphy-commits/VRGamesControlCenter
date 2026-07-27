@@ -1,0 +1,18 @@
+Window #0 Window{a2250cb u0 InputMethod}:
+Window #1 Window{88ba398 u0 com.oculus.metacam/com.oculus.metacam.dialogactivity.SharingDialogActivity}:
+Window #2 Window{470ca16 u0 com.oculus.vrshell/com.oculus.vrshell.FocusPlaceholderActivity}:
+Window #3 Window{8006c43 u0 com.oculus.vrshell/com.oculus.vrshell.HomeActivity}:
+Window #4 Window{143a94b u0 com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity}:
+Window #5 Window{e167f5d u0 com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity}:
+Window #6 Window{eb9f018 u0 com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity}:
+Window #7 Window{73471b u0 com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity}:
+Window #8 Window{62b8e3b u0 com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity}:
+Window #9 Window{de90809 u0 com.oculus.panelapp.library/com.oculus.navigator.systembar.app.SystemBarActivity}:
+Window #10 Window{cbae8de u0 com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity}:
+Window #11 Window{bdae184 u0 com.oculus.store/com.oculus.store.StoreActivity}:
+Window #12 Window{15672c1 u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_status}:
+Window #13 Window{756678e u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_wayfinder_menu}:
+Window #14 Window{ab29fd1 u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-guiding_toast}:
+imeLayeringTarget in display# 0 Window{88ba398 u0 com.oculus.metacam/com.oculus.metacam.dialogactivity.SharingDialogActivity}
+imeInputTarget in display# 0 Window{88ba398 u0 com.oculus.metacam/com.oculus.metacam.dialogactivity.SharingDialogActivity}
+mInputMethodWindow=Window{a2250cb u0 InputMethod}

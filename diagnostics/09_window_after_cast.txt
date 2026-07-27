@@ -1,0 +1,457 @@
+COMANDO:
+adb -s 10.0.0.245:5555 shell dumpsys window windows
+
+STDOUT:
+WINDOW MANAGER WINDOWS (dumpsys window windows)
+  Window #0 Window{470ca16 u0 com.oculus.vrshell/com.oculus.vrshell.FocusPlaceholderActivity}:
+    mDisplayId=0 rootTaskId=434 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@45f9331
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan forwardNavigation} ty=BASE_APPLICATION wanim=0x1030301
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR ALT_FOCUSABLE_IM SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED INTERCEPT_GLOBAL_DRAG_AND_DROP
+      bhv=DEFAULT
+      fitSides=}
+    Requested w=1 h=1 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{f200089 u0 com.oculus.vrshell/.FocusPlaceholderActivity t435}
+    mActivityRecord=ActivityRecord{f200089 u0 com.oculus.vrshell/.FocusPlaceholderActivity t435}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1dp w1dp h1dp 200dpi smll port night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1, 1) mAppBounds=Rect(0, 0 - 1, 1) mMaxBounds=Rect(0, 0 - 1, 1) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1dp w1dp h1dp 200dpi smll port night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1, 1) mAppBounds=Rect(0, 0 - 1, 1) mMaxBounds=Rect(0, 0 - 1, 1) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1,1] display=[0,0][1,1] frame=[0,0][1,1] last=[0,0][1,1] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{8ad0e23 com.oculus.vrshell/com.oculus.vrshell.FocusPlaceholderActivity}:
+      mSurface=Surface(name=com.oculus.vrshell/com.oculus.vrshell.FocusPlaceholderActivity)/@0xe0fdf20
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+  Window #1 Window{8006c43 u0 com.oculus.vrshell/com.oculus.vrshell.HomeActivity}:
+    mDisplayId=0 rootTaskId=2 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@824c590
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(1x1) sim={adjust=pan} ty=BASE_APPLICATION wanim=0x1030301
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR ALT_FOCUSABLE_IM SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=DEFAULT
+      fitSides=}
+    Requested w=1 h=1 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{7d2837b u0 com.oculus.vrshell/.HomeActivity t407}
+    mActivityRecord=ActivityRecord{7d2837b u0 com.oculus.vrshell/.HomeActivity t407}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1766dp w3302dp h1766dp 200dpi xlrg long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 4128, 2208) mAppBounds=Rect(0, 0 - 4128, 2208) mMaxBounds=Rect(0, 0 - 4128, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1766dp w3302dp h1766dp 200dpi xlrg long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 4128, 2208) mAppBounds=Rect(0, 0 - 4128, 2208) mMaxBounds=Rect(0, 0 - 4128, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][4128,2208] display=[0,0][4128,2208] frame=[2063,1103][2064,1104] last=[2063,1103][2064,1104] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{61f4e04 com.oculus.vrshell/com.oculus.vrshell.HomeActivity}:
+      mSurface=Surface(name=com.oculus.vrshell/com.oculus.vrshell.HomeActivity)/@0x57df0d9
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+  Window #2 Window{143a94b u0 com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity}:
+    mDisplayId=0 rootTaskId=424 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@9c44a1a
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=425 h=75 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{62bd74 u0 com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity t425}
+    mActivityRecord=ActivityRecord{62bd74 u0 com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity t425}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw60dp w340dp h60dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 425, 75) mAppBounds=Rect(0, 0 - 425, 75) mMaxBounds=Rect(0, 0 - 425, 75) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw60dp w340dp h60dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 425, 75) mAppBounds=Rect(0, 0 - 425, 75) mMaxBounds=Rect(0, 0 - 425, 75) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][425,75] display=[0,0][425,75] frame=[0,0][425,75] last=[0,0][425,75] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{c531a17 com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity}:
+      mSurface=Surface(name=com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity)/@0x6d7da9e
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #3 Window{e167f5d u0 com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity}:
+    mDisplayId=0 rootTaskId=416 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@ca0b007
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=253 h=63 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{51ecb5 u0 com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity t417}
+    mActivityRecord=ActivityRecord{51ecb5 u0 com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity t417}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw50dp w202dp h50dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 253, 63) mAppBounds=Rect(0, 0 - 253, 63) mMaxBounds=Rect(0, 0 - 253, 63) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw50dp w202dp h50dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 253, 63) mAppBounds=Rect(0, 0 - 253, 63) mMaxBounds=Rect(0, 0 - 253, 63) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][253,63] display=[0,0][253,63] frame=[0,0][253,63] last=[0,0][253,63] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{ed30e96 com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity}:
+      mSurface=Surface(name=com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity)/@0x2b8697f
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #4 Window{eb9f018 u0 com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity}:
+    mDisplayId=0 rootTaskId=420 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@95b7f7e
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN SECURE LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=450 h=100 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{e46bfc8 u0 com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity t421}
+    mActivityRecord=ActivityRecord{e46bfc8 u0 com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity t421}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw80dp w360dp h80dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 450, 100) mAppBounds=Rect(0, 0 - 450, 100) mMaxBounds=Rect(0, 0 - 450, 100) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.5 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw80dp w360dp h80dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 450, 100) mAppBounds=Rect(0, 0 - 450, 100) mMaxBounds=Rect(0, 0 - 450, 100) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.5 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][450,100] display=[0,0][450,100] frame=[0,0][450,100] last=[0,0][450,100] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{28619b1 com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity}:
+      mSurface=Surface(name=com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity)/@0xfe3cd4c
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #5 Window{73471b u0 com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity}:
+    mDisplayId=0 rootTaskId=414 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@12d7d59
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=1020 h=125 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{b6510d7 u0 com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity t415}
+    mActivityRecord=ActivityRecord{b6510d7 u0 com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity t415}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw100dp w816dp h100dp 200dpi nrml long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1020, 125) mAppBounds=Rect(0, 0 - 1020, 125) mMaxBounds=Rect(0, 0 - 1020, 125) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw100dp w816dp h100dp 200dpi nrml long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1020, 125) mAppBounds=Rect(0, 0 - 1020, 125) mMaxBounds=Rect(0, 0 - 1020, 125) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1020,125] display=[0,0][1020,125] frame=[0,0][1020,125] last=[0,0][1020,125] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{3de4458 com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity}:
+      mSurface=Surface(name=com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity)/@0x153c195
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #6 Window{62b8e3b u0 com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity}:
+    mDisplayId=0 rootTaskId=410 mSession=Session{2a7f80d 4554:u0a10009} mClient=android.os.BinderProxy@9d9ecca
+    mOwnerUid=10009 showForAllUsers=false package=com.oculus.systemux appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=450 h=245 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{8448ddd u0 com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity t411}
+    mActivityRecord=ActivityRecord{8448ddd u0 com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity t411}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw196dp w360dp h196dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 450, 245) mAppBounds=Rect(0, 0 - 450, 245) mMaxBounds=Rect(0, 0 - 450, 245) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.4 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw196dp w360dp h196dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 450, 245) mAppBounds=Rect(0, 0 - 450, 245) mMaxBounds=Rect(0, 0 - 450, 245) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.4 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][450,245] display=[0,0][450,245] frame=[0,0][450,245] last=[0,0][450,245] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{f7d653b com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity}:
+      mSurface=Surface(name=com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity)/@0x3e302aa
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #7 Window{de90809 u0 com.oculus.panelapp.library/com.oculus.navigator.systembar.app.SystemBarActivity}:
+    mDisplayId=0 rootTaskId=412 mSession=Session{dba8a11 4035:u0a10115} mClient=android.os.BinderProxy@491510
+    mOwnerUid=10115 showForAllUsers=false package=com.oculus.panelapp.library appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=1500 h=175 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{4822f10 u0 com.oculus.panelapp.library/com.oculus.navigator.systembar.app.SystemBarActivity t413}
+    mActivityRecord=ActivityRecord{4822f10 u0 com.oculus.panelapp.library/com.oculus.navigator.systembar.app.SystemBarActivity t413}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw140dp w1200dp h140dp 200dpi nrml long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1500, 175) mAppBounds=Rect(0, 0 - 1500, 175) mMaxBounds=Rect(0, 0 - 1500, 175) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw140dp w1200dp h140dp 200dpi nrml long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1500, 175) mAppBounds=Rect(0, 0 - 1500, 175) mMaxBounds=Rect(0, 0 - 1500, 175) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1500,175] display=[0,0][1500,175] frame=[0,0][1500,175] last=[0,0][1500,175] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{24bbf35 com.oculus.panelapp.library/com.oculus.navigator.systembar.app.SystemBarActivity}:
+      mSurface=Surface(name=com.oculus.panelapp.library/com.oculus.navigator.systembar.app.SystemBarActivity)/@0x4b06b8e
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #8 Window{a2250cb u0 InputMethod}:
+    mDisplayId=0 rootTaskId=2 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@8dedf9a
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(wrapxwrap) gr=TOP LEFT CENTER sim={adjust=pan forwardNavigation} ty=INPUT_METHOD fmt=TRANSPARENT wanim=0x1030056 receive insets ignoring z-order
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=DEFAULT
+      fitTypes=STATUS_BARS NAVIGATION_BARS
+      fitSides=LEFT TOP RIGHT}
+    Requested w=0 h=0 mLayoutSeq=76
+    mIsImWindow=true mIsWallpaper=false mIsFloatingLayer=true
+    mBaseLayer=131000 mSubLayer=0    mToken=WindowToken{5848c7 type=2011 android.os.Binder@3ea0a06}
+    mViewVisibility=0x8 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mTouchableInsets=2 mGivenInsetsPending=false
+    touchable region=SkRegion()
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1766dp w3302dp h1766dp 200dpi xlrg long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 4128, 2208) mAppBounds=Rect(0, 0 - 4128, 2208) mMaxBounds=Rect(0, 0 - 4128, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mLastReportedConfiguration={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=undefined mDisplayWindowingMode=undefined mActivityType=undefined mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    Frames: parent=[0,0][4128,2208] display=[0,0][4128,2208] frame=[0,0][0,0] last=[0,0][4128,2208] insetsChanged=false
+     surface=[0,0][0,0]
+    ContainerAnimator:
+      mLeash=Surface(name=Surface(name=a2250cb InputMethod)/@0x42a0e43 - animation-leash of insets_animation)/@0xe25f90a mAnimationType=insets_animation
+      Animation: com.android.server.wm.InsetsSourceProvider$ControlAdapter@6bdfa5
+        ControlAdapter mCapturedLeash=Surface(name=Surface(name=a2250cb InputMethod)/@0x42a0e43 - animation-leash of insets_animation)/@0xe25f90a
+    WindowStateAnimator{319fed InputMethod}:
+      mDrawState=NO_SURFACE       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=false
+    isVisible=false
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+  Window #9 Window{cbae8de u0 com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity}:
+    mDisplayId=0 rootTaskId=418 mSession=Session{dba8a11 4035:u0a10115} mClient=android.os.BinderProxy@2675019
+    mOwnerUid=10115 showForAllUsers=false package=com.oculus.panelapp.library appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan forwardNavigation} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=1840 h=1000 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{4173071 u0 com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity t419}
+    mActivityRecord=ActivityRecord{4173071 u0 com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity t419}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw800dp w1472dp h800dp 200dpi xlrg long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1840, 1000) mAppBounds=Rect(0, 0 - 1840, 1000) mMaxBounds=Rect(0, 0 - 1840, 1000) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw800dp w1472dp h800dp 200dpi xlrg long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1840, 1000) mAppBounds=Rect(0, 0 - 1840, 1000) mMaxBounds=Rect(0, 0 - 1840, 1000) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1840,1000] display=[0,0][1840,1000] frame=[0,0][1840,1000] last=[0,0][1840,1000] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{680bfca com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity}:
+      mSurface=Surface(name=com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity)/@0xdb73faf
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #10 Window{bdae184 u0 com.oculus.store/com.oculus.store.StoreActivity}:
+    mDisplayId=0 rootTaskId=422 mSession=Session{9963dbf 4321:u0a10063} mClient=android.os.BinderProxy@73acb97
+    mOwnerUid=10063 showForAllUsers=false package=com.oculus.store appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=resize} ty=BASE_APPLICATION fmt=TRANSPARENT
+      fl=LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=1280 h=800 mLayoutSeq=282
+    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{1ddbe24 u0 com.oculus.store/.StoreActivity t423}
+    mActivityRecord=ActivityRecord{1ddbe24 u0 com.oculus.store/.StoreActivity t423}
+    drawnStateEvaluated=true    mightAffectAllDrawn=true
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw640dp w1024dp h640dp 200dpi lrg land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1280, 800) mAppBounds=Rect(0, 0 - 1280, 800) mMaxBounds=Rect(0, 0 - 1280, 800) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw640dp w1024dp h640dp 200dpi lrg land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1280, 800) mAppBounds=Rect(0, 0 - 1280, 800) mMaxBounds=Rect(0, 0 - 1280, 800) mDisplayRotation=ROTATION_0 mWindowingMode=multi-window mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1280,800] display=[0,0][1280,800] frame=[0,0][1280,800] last=[0,0][1280,800] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{2cbd6c com.oculus.store/com.oculus.store.StoreActivity}:
+      mSurface=Surface(name=com.oculus.store/com.oculus.store.StoreActivity)/@0xcc79fbc
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    Requested non-default-visibility types: statusBars
+    mPrepareSyncSeqId=0
+  Window #11 Window{15672c1 u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_status}:
+    mDisplayId=2 mSession=Session{dba8a11 4035:u0a10115} mClient=android.os.BinderProxy@a6317a8
+    mOwnerUid=10115 showForAllUsers=false package=com.oculus.panelapp.library appop=NONE
+    mAttrs={(0,0)(fillxfill) gr=FILL CENTER sim={adjust=pan forwardNavigation} ty=PRIVATE_PRESENTATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=1100 h=75 mLayoutSeq=4
+    mBaseLayer=31000 mSubLayer=0    mToken=WindowToken{17b41a7 type=2030 android.os.BinderProxy@a04e6a0}
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw60dp w880dp h60dp 200dpi nrml long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1100, 75) mAppBounds=Rect(0, 0 - 1100, 75) mMaxBounds=Rect(0, 0 - 1100, 75) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw60dp w880dp h60dp 200dpi nrml long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1100, 75) mAppBounds=Rect(0, 0 - 1100, 75) mMaxBounds=Rect(0, 0 - 1100, 75) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.17 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1100,75] display=[0,0][1100,75] frame=[0,0][1100,75] last=[0,0][1100,75] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{b127b45 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_status}:
+      mSurface=Surface(name=com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_status)/@0x4cbb29a
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+  Window #12 Window{756678e u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_wayfinder_menu}:
+    mDisplayId=3 mSession=Session{dba8a11 4035:u0a10115} mClient=android.os.BinderProxy@c3bdb89
+    mOwnerUid=10115 showForAllUsers=false package=com.oculus.panelapp.library appop=NONE
+    mAttrs={(0,0)(fillxfill) gr=FILL CENTER sim={adjust=pan forwardNavigation} ty=PRIVATE_PRESENTATION fmt=TRANSPARENT
+      fl=LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=400 h=313 mLayoutSeq=4
+    mBaseLayer=31000 mSubLayer=0    mToken=WindowToken{473fbbc type=2030 android.os.BinderProxy@eab70ad}
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw250dp w320dp h250dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 400, 313) mAppBounds=Rect(0, 0 - 400, 313) mMaxBounds=Rect(0, 0 - 400, 313) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw250dp w320dp h250dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 400, 313) mAppBounds=Rect(0, 0 - 400, 313) mMaxBounds=Rect(0, 0 - 400, 313) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.17 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][400,313] display=[0,0][400,313] frame=[0,0][400,313] last=[0,0][400,313] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{84227cb com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_wayfinder_menu}:
+      mSurface=Surface(name=com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.panelapp.library-system_bar_wayfinder_menu)/@0xe4cfba8
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+  Window #13 Window{ab29fd1 u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-guiding_toast}:
+    mDisplayId=7 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@9ae8ef8
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) gr=FILL CENTER sim={adjust=pan forwardNavigation} ty=PRIVATE_PRESENTATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=1 h=1 mLayoutSeq=4
+    mBaseLayer=31000 mSubLayer=0    mToken=WindowToken{f855d37 type=2030 android.os.BinderProxy@7b5b9d1}
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1dp w1dp h1dp 200dpi smll port night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1, 1) mAppBounds=Rect(0, 0 - 1, 1) mMaxBounds=Rect(0, 0 - 1, 1) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1dp w1dp h1dp 200dpi smll port night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1, 1) mAppBounds=Rect(0, 0 - 1, 1) mMaxBounds=Rect(0, 0 - 1, 1) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][1,1] display=[0,0][1,1] frame=[0,0][1,1] last=[0,0][1,1] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{b0c861f com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-guiding_toast}:
+      mSurface=Surface(name=com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-guiding_toast)/@0xf267238
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+  Window #14 Window{b83e5da u0 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-controlbar13}:
+    mDisplayId=17 mSession=Session{ce18db 3020:u0a10020} mClient=android.os.BinderProxy@20a7385
+    mOwnerUid=10020 showForAllUsers=false package=com.oculus.vrshell appop=NONE
+    mAttrs={(0,0)(fillxfill) gr=FILL CENTER sim={adjust=pan forwardNavigation} ty=PRIVATE_PRESENTATION fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND USE_BLAST FIT_INSETS_CONTROLLED
+      bhv=SHOW_TRANSIENT_BARS_BY_SWIPE
+      fitSides=}
+    Requested w=550 h=60 mLayoutSeq=4
+    mBaseLayer=31000 mSubLayer=0    mToken=WindowToken{d2e80e8 type=2030 android.os.BinderProxy@429be1e}
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mFullConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw48dp w440dp h48dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 550, 60) mAppBounds=Rect(0, 0 - 550, 60) mMaxBounds=Rect(0, 0 - 550, 60) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mLastReportedConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw48dp w440dp h48dp 200dpi smll land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 550, 60) mAppBounds=Rect(0, 0 - 550, 60) mMaxBounds=Rect(0, 0 - 550, 60) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    Frames: parent=[0,0][550,60] display=[0,0][550,60] frame=[0,0][550,60] last=[0,0][550,60] insetsChanged=false
+     surface=[0,0][0,0]
+    WindowStateAnimator{76486c1 com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-controlbar13}:
+      mSurface=Surface(name=com.oculus.android_panel_app.AndroidPanelLayer-com.oculus.vrshell-controlbar13)/@0x1225e66
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0)  transform=(1.0, 0.0, 0.0, 1.0)
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null    isOnScreen=true
+    isVisible=true
+    keepClearAreas: restricted=[], unrestricted=[]
+    mPrepareSyncSeqId=0
+
+  mGlobalConfiguration={1.0 ?mcc0mnc [es_LA] ldltr sw1766dp w3302dp h1766dp 200dpi xlrg long land night -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 4128, 2208) mAppBounds=Rect(0, 0 - 4128, 2208) mMaxBounds=Rect(0, 0 - 4128, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 fontWeightAdjustment=0}
+  mHasPermanentDpad=false
+  mTopFocusedDisplayId=0
+  imeLayeringTarget in display# 0 Window{cbae8de u0 com.oculus.panelapp.library/com.oculus.navigator.library.app.NavigatorLibraryActivity}
+  imeControlTarget in display# 0 com.android.server.wm.DisplayContent$RemoteInsetsControlTarget@9ae5a8f
+  Minimum task size of display#0 1  Minimum task size of display#2 1  Minimum task size of display#3 1  Minimum task size of display#4 1  Minimum task size of display#5 1  Minimum task size of display#6 1  Minimum task size of display#7 1  Minimum task size of display#8 1  Minimum task size of display#9 1  Minimum task size of display#17 1  mBlurEnabled=false
+  mLastDisplayFreezeDuration=0 due to new-config
+ mHighResSnapshotScale=0.1
+ mSnapshotEnabled=false
+ SnapshotCache Task
+ mHighResSnapshotScale=0.6
+ mSnapshotEnabled=false
+ SnapshotCache Activity
+  mInputMethodWindow=Window{a2250cb u0 InputMethod}
+  mTraversalScheduled=false
+  mSystemBooted=true mDisplayEnabled=true
+  mTransactionSequence=545
+  mDisplayFrozen=false windows=0 client=false apps=0
+  mRotation=0
+  mLastOrientation=-1
+  mWaitingForConfig=false
+  Animation settings: disabled=false window=1.0 transition=1.0 animator=1.0
+
+
+STDERR:
+

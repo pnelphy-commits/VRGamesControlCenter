@@ -7,9 +7,11 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("VR GAMES CONTROL CENTER")
-        self.resize(1100, 850)
-        self.setMinimumSize(950, 750)
+        self.setWindowTitle(
+            "VR GAMES CONTROL CENTER"
+        )
+
+        self.setMinimumSize(1100, 700)
 
         self.setStyleSheet("""
             QMainWindow {
@@ -17,5 +19,9 @@ class MainWindow(QMainWindow):
             }
         """)
 
-        dashboard = Dashboard()
-        self.setCentralWidget(dashboard)
+        self.dashboard = Dashboard()
+        self.setCentralWidget(self.dashboard)
+
+    def closeEvent(self, event):
+        self.dashboard.quest_controller.shutdown()
+        event.accept()

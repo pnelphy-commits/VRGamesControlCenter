@@ -1,13 +1,6 @@
-from PySide6.QtCore import (
-    QObject,
-    QThread,
-    QTimer,
-    Signal,
-    Slot,
-)
+from PySide6.QtCore import QObject, QThread, QTimer, Signal, Slot
 
 from services.discovery_service import DiscoveryService
-from services.keep_alive_service import KeepAliveService
 
 
 class DiscoveryWorker(QObject):
@@ -19,6 +12,7 @@ class DiscoveryWorker(QObject):
         discovery_service: DiscoveryService,
     ):
         super().__init__()
+
         self.discovery_service = discovery_service
 
     @Slot()
@@ -28,47 +22,32 @@ class DiscoveryWorker(QObject):
                 self.discovery_service.discover_stations()
             )
             self.finished.emit(devices)
+
         except Exception as error:
             self.failed.emit(str(error))
 
 
 class QuestController(QObject):
     devices_updated = Signal(object)
-    keep_alive_updated = Signal(object)
 
     def __init__(self):
         super().__init__()
 
         self.discovery_service = DiscoveryService()
 
-        self.discovery_in_progress = False
         self.discovery_thread = None
         self.discovery_worker = None
+        self.discovery_in_progress = False
+        self.shutting_down = False
 
-        self.timer = QTimer(self)
-        self.timer.setInterval(10000)
-        self.timer.timeout.connect(
-            self.refresh_devices
-        )
-        self.timer.start()
-
-        self.keep_alive_service = KeepAliveService(
-            interval_seconds=20,
-            parent=self,
-        )
-
-        self.keep_alive_service.status_updated.connect(
-            self.handle_keep_alive_results
-        )
-
-        self.keep_alive_service.start()
-
-        QTimer.singleShot(
-            300,
-            self.refresh_devices,
-        )
+        # Solo se ejecuta una búsqueda al abrir el programa.
+        # No habrá un temporizador buscando continuamente.
+        QTimer.singleShot(500, self.refresh_devices)
 
     def refresh_devices(self):
+        if self.shutting_down:
+            return
+
         if self.discovery_in_progress:
             return
 
@@ -114,18 +93,20 @@ class QuestController(QObject):
         self,
         devices,
     ):
-        self.devices_updated.emit(devices)
+        if not self.shutting_down:
+            self.devices_updated.emit(devices)
 
     def handle_discovery_failed(
         self,
         error_message: str,
     ):
         print(
-            f"Error al buscar Meta Quest: "
+            "Error al buscar Meta Quest: "
             f"{error_message}"
         )
 
-        self.devices_updated.emit([])
+        if not self.shutting_down:
+            self.devices_updated.emit([])
 
     def cleanup_discovery(self):
         if self.discovery_worker is not None:
@@ -138,22 +119,9 @@ class QuestController(QObject):
         self.discovery_thread = None
         self.discovery_in_progress = False
 
-    def handle_keep_alive_results(
-        self,
-        results,
-    ):
-        self.keep_alive_updated.emit(results)
-
-        if any(
-            station.get("connected")
-            for station in results.values()
-        ):
-            self.refresh_devices()
-
     def reload_stations(self):
         self.discovery_service.reload_stations()
         self.refresh_devices()
-        self.keep_alive_service.run_check()
 
     def launch_game(
         self,
@@ -172,11 +140,9 @@ class QuestController(QObject):
             )
             return False
 
-        return (
-            self.discovery_service.adb.launch_activity(
-                adb_identifier,
-                component,
-            )
+        return self.discovery_service.adb.launch_activity(
+            adb_identifier,
+            component,
         )
 
     def finish_session(
@@ -189,11 +155,29 @@ class QuestController(QObject):
             )
             return False
 
-        return (
-            self.discovery_service.adb.close_activity(
-                adb_identifier
-            )
+        return self.discovery_service.adb.close_activity(
+            adb_identifier
         )
 
     def get_last_error(self) -> str:
         return self.discovery_service.adb.last_error
+
+    def shutdown(self):
+        """
+        Cierra correctamente el hilo de búsqueda antes
+        de terminar la aplicación.
+        """
+
+        self.shutting_down = True
+
+        if (
+            self.discovery_thread is not None
+            and self.discovery_thread.isRunning()
+        ):
+            self.discovery_thread.quit()
+
+            if not self.discovery_thread.wait(5000):
+                print(
+                    "La búsqueda ADB tardó demasiado "
+                    "en finalizar."
+                )

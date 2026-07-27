@@ -1,0 +1,9 @@
+COMANDO:
+adb -s 10.0.0.245:5555 shell pm list packages cast
+
+STDOUT:
+package:com.oculus.magicislandcastingservice
+
+
+STDERR:
+

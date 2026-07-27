@@ -1,0 +1,9 @@
+topResumedActivity=ActivityRecord{859149f u0 com.oculus.metacam/.dialogactivity.SharingDialogActivity t441}
+topResumedActivity=ActivityRecord{f200089 u0 com.oculus.vrshell/.FocusPlaceholderActivity t435}
+topResumedActivity=ActivityRecord{7d2837b u0 com.oculus.vrshell/.HomeActivity t407}
+topResumedActivity=ActivityRecord{62bd74 u0 com.oculus.vrshell/com.oculus.panelapp.controlbar.ControlBarActivity t425}
+topResumedActivity=ActivityRecord{51ecb5 u0 com.oculus.vrshell/com.oculus.panelapp.displaybar.DisplayBarActivity t417}
+topResumedActivity=ActivityRecord{e46bfc8 u0 com.oculus.vrshell/com.oculus.panelapp.toasts.ToastsActivity t421}
+topResumedActivity=ActivityRecord{b6510d7 u0 com.oculus.vrshell/com.oculus.panelapp.bloom.BloomActivity t415}
+topResumedActivity=ActivityRecord{8448ddd u0 com.oculus.systemux/com.oculus.panelapp.activetaskbar.ActiveTaskBarActivity t411}
+ResumedActivity: ActivityRecord{859149f u0 com.oculus.metacam/.dialogactivity.SharingDialogActivity t441}
