@@ -22,6 +22,7 @@ from services.display_manager import DisplayManager
 from services.network_service import NetworkService
 from ui.quest_setup_wizard import QuestSetupWizard
 from ui.station_preparation import StationPreparationDialog
+from ui.tv_setup_dialog import TvSetupDialog
 from widgets.station_card import StationCard
 from widgets.top_bar import TopBar
 
@@ -109,7 +110,10 @@ class Dashboard(QWidget):
         self.top_bar = TopBar()
 
         actions_layout = QHBoxLayout()
-        actions_layout.setSpacing(10)
+
+        actions_layout.setSpacing(
+            10
+        )
 
         section_title = QLabel(
             "ESTACIONES META QUEST"
@@ -137,17 +141,30 @@ class Dashboard(QWidget):
             self.open_station_preparation
         )
 
-        setup_button = QPushButton(
+        setup_quest_button = QPushButton(
             "CONFIGURAR META QUEST"
         )
 
-        setup_button.setProperty(
+        setup_quest_button.setProperty(
             "buttonType",
             "danger",
         )
 
-        setup_button.clicked.connect(
+        setup_quest_button.clicked.connect(
             self.open_setup_wizard
+        )
+
+        setup_tv_button = QPushButton(
+            "CONFIGURAR TVs"
+        )
+
+        setup_tv_button.setProperty(
+            "buttonType",
+            "success",
+        )
+
+        setup_tv_button.clicked.connect(
+            self.open_tv_setup
         )
 
         actions_layout.addWidget(
@@ -161,7 +178,11 @@ class Dashboard(QWidget):
         )
 
         actions_layout.addWidget(
-            setup_button
+            setup_quest_button
+        )
+
+        actions_layout.addWidget(
+            setup_tv_button
         )
 
         content_widget = QWidget()
@@ -177,8 +198,13 @@ class Dashboard(QWidget):
             4,
         )
 
-        stations_grid.setHorizontalSpacing(18)
-        stations_grid.setVerticalSpacing(18)
+        stations_grid.setHorizontalSpacing(
+            18
+        )
+
+        stations_grid.setVerticalSpacing(
+            18
+        )
 
         self.station_cards = [
             StationCard("META QUEST 1"),
@@ -225,7 +251,10 @@ class Dashboard(QWidget):
         )
 
         scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)
+
+        scroll_area.setWidgetResizable(
+            True
+        )
 
         scroll_area.setFrameShape(
             QScrollArea.Shape.NoFrame
@@ -335,10 +364,20 @@ class Dashboard(QWidget):
         self.quest_controller.refresh_devices()
 
     def open_setup_wizard(self):
-        wizard = QuestSetupWizard(self)
+        wizard = QuestSetupWizard(
+            self
+        )
+
         wizard.exec()
 
         self.quest_controller.reload_stations()
+
+    def open_tv_setup(self):
+        dialog = TvSetupDialog(
+            self
+        )
+
+        dialog.exec()
 
     def update_quest_devices(
         self,
@@ -417,7 +456,8 @@ class Dashboard(QWidget):
                 "TV no asignada",
                 (
                     "No hay una televisión asignada "
-                    f"a {station_name}."
+                    f"a {station_name}.\n\n"
+                    "Utiliza CONFIGURAR TVs."
                 ),
             )
             return
@@ -441,10 +481,11 @@ class Dashboard(QWidget):
 
             QMessageBox.warning(
                 self,
-                "Nombre Chromecast pendiente",
+                "TV sin configurar",
                 (
-                    "Configura el nombre exacto "
-                    "que aparece dentro de la Meta Quest."
+                    "La estación no tiene un nombre "
+                    "Chromecast configurado.\n\n"
+                    "Utiliza CONFIGURAR TVs."
                 ),
             )
             return
@@ -462,7 +503,9 @@ class Dashboard(QWidget):
 
         card.cast_connecting()
 
-        thread = QThread(self)
+        thread = QThread(
+            self
+        )
 
         worker = CastWorker(
             card=card,
@@ -471,7 +514,9 @@ class Dashboard(QWidget):
             television_ip=television_ip,
         )
 
-        worker.moveToThread(thread)
+        worker.moveToThread(
+            thread
+        )
 
         thread.started.connect(
             worker.run
