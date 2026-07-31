@@ -3,29 +3,29 @@
         {
             "display_number": 1,
             "name": "TV META 1",
-            "device_name": "",
-            "ip": "",
+            "device_name": "Meta 01",
+            "ip": "10.0.0.219",
             "assigned_station": 1
         },
         {
             "display_number": 2,
             "name": "TV META 2",
-            "device_name": "Meta 01",
-            "ip": "10.0.0.219",
+            "device_name": "Meta 02",
+            "ip": "10.0.0.105",
             "assigned_station": 2
         },
         {
             "display_number": 3,
             "name": "TV META 3",
-            "device_name": "",
-            "ip": "",
+            "device_name": "Meta 03",
+            "ip": "10.0.0.249",
             "assigned_station": 3
         },
         {
             "display_number": 4,
             "name": "TV META 4",
-            "device_name": "",
-            "ip": "",
+            "device_name": "Meta 04",
+            "ip": "10.0.0.101",
             "assigned_station": 4
         }
     ]
