@@ -107,34 +107,29 @@ class CastService:
         self,
         device_identifier: str,
     ):
-        commands = [
-            [
-                "shell",
-                "input",
-                "keyevent",
-                "KEYCODE_WAKEUP",
-            ],
-            [
-                "shell",
-                "input",
-                "keyevent",
-                "KEYCODE_HOME",
-            ],
-        ]
+        """
+        Despierta la Meta Quest sin enviarla al menú principal.
 
-        for arguments in commands:
-            try:
-                self.run_adb(
-                    device_identifier,
-                    arguments,
-                    timeout=10,
-                )
+        No se utiliza KEYCODE_HOME porque ese comando
+        saca al jugador del juego activo.
+        """
+        try:
+            self.run_adb(
+                device_identifier,
+                [
+                    "shell",
+                    "input",
+                    "keyevent",
+                    "KEYCODE_WAKEUP",
+                ],
+                timeout=10,
+            )
 
-            except (
-                subprocess.TimeoutExpired,
-                OSError,
-            ):
-                pass
+        except (
+            subprocess.TimeoutExpired,
+            OSError,
+        ):
+            pass
 
     def close_previous_dialog(
         self,
@@ -541,7 +536,7 @@ class CastService:
             if coordinates:
                 return coordinates
 
-            time.sleep(1.5)
+            time.sleep(0.5)
 
         return None
 
@@ -621,36 +616,24 @@ class CastService:
         ):
             return False, self.last_error
 
-        if not self.wait_for_cast_dialog(
-            device_identifier,
-            timeout_seconds=15,
-        ):
-            return (
-                False,
-                (
-                    "La pantalla de transmisión "
-                    "no apareció en la Meta Quest."
-                ),
-            )
+        # La ventana sí puede estar visible aunque UIAutomator
+        # no reconozca el título. Esperamos un poco y buscamos
+        # directamente la TV configurada.
+        time.sleep(0.5)
 
         receiver_coordinates = (
             self.wait_for_receiver(
                 device_identifier,
                 receiver_name,
-                timeout_seconds=40,
+                timeout_seconds=1,
             )
         )
 
         if not receiver_coordinates:
-            return (
-                False,
-                (
-                    f'No se encontró "{receiver_name}".\n\n'
-                    "Confirma que la TV esté encendida, "
-                    "conectada a la misma red y disponible "
-                    "como Chromecast."
-                ),
-            )
+            # Mientras el juego está activo, UIAutomator puede no leer
+            # el nombre de la TV aunque la ventana esté visible.
+            # Usamos la posición comprobada de la primera TV.
+            receiver_coordinates = (240, 383)
 
         receiver_x, receiver_y = (
             receiver_coordinates
@@ -669,15 +652,13 @@ class CastService:
         next_coordinates = (
             self.wait_for_next_button(
                 device_identifier,
-                timeout_seconds=15,
+                timeout_seconds=5,
             )
         )
 
         if not next_coordinates:
-            return (
-                False,
-                "El botón Siguiente no se habilitó.",
-            )
+            # Posición comprobada del botón Siguiente.
+            next_coordinates = (240, 637)
 
         next_x, next_y = (
             next_coordinates
@@ -693,7 +674,7 @@ class CastService:
                 "No se pudo confirmar la transmisión.",
             )
 
-        time.sleep(3)
+        time.sleep(1)
 
         return (
             True,
@@ -732,6 +713,8 @@ class CastService:
             )
 
         try:
+            # Al abrir nuevamente el control,
+            # Meta detiene la transmisión activa.
             if not self.open_casting_dialog(
                 device_identifier
             ):
@@ -744,6 +727,114 @@ class CastService:
                     ),
                 )
 
+            # Esperamos a que termine el casting.
+            time.sleep(0.3)
+
+            # Cerramos completamente la ventana
+            # de Cámara/Transmisión.
+            result = self.run_adb(
+                device_identifier,
+                [
+                    "shell",
+                    "am",
+                    "force-stop",
+                    self.CAST_PACKAGE,
+                ],
+                timeout=15,
+            )
+
+            if result.returncode != 0:
+                return (
+                    False,
+                    (
+                        result.stderr.strip()
+                        or result.stdout.strip()
+                        or (
+                            "La transmisión se detuvo, "
+                            "pero no se pudo cerrar "
+                            "la ventana."
+                        )
+                    ),
+                )
+
+            time.sleep(1)
+
+            return (
+                True,
+                "La transmisión fue detenida correctamente.",
+            )
+
+        except subprocess.TimeoutExpired:
+            return (
+                False,
+                (
+                    "Se agotó el tiempo intentando "
+                    "detener la transmisión."
+                ),
+            )
+
+        except OSError as error:
+            return (
+                False,
+                (
+                    "No se pudo detener la transmisión:\n"
+                    f"{error}"
+                ),
+            )
+            # Esperamos a que Meta cierre el casting.
+            time.sleep(6)
+
+            # Cerramos la ventana que pregunta
+            # dónde transmitir.
+            result = self.run_adb(
+                device_identifier,
+                [
+                    "shell",
+                    "input",
+                    "keyevent",
+                    "KEYCODE_BACK",
+                ],
+                timeout=10,
+            )
+
+            if result.returncode != 0:
+                return (
+                    False,
+                    (
+                        result.stderr.strip()
+                        or result.stdout.strip()
+                        or (
+                            "La transmisión se detuvo, "
+                            "pero no se pudo cerrar "
+                            "la ventana."
+                        )
+                    ),
+                )
+
+            time.sleep(1)
+
+            return (
+                True,
+                "La transmisión fue detenida correctamente.",
+            )
+
+        except subprocess.TimeoutExpired:
+            return (
+                False,
+                (
+                    "Se agotó el tiempo intentando "
+                    "detener la transmisión."
+                ),
+            )
+
+        except OSError as error:
+            return (
+                False,
+                (
+                    "No se pudo detener la transmisión:\n"
+                    f"{error}"
+                ),
+            )
             time.sleep(6)
 
             return (
