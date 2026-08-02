@@ -32,61 +32,83 @@ class CastWorker(QObject):
         bool,
         str,
         object,
+        str,
     )
 
     def __init__(
         self,
         card: StationCard,
+        action: str,
         adb_identifier: str,
-        receiver_name: str,
-        television_ip: str,
+        receiver_name: str = "",
+        television_ip: str = "",
     ):
         super().__init__()
 
         self.card = card
+        self.action = action
         self.adb_identifier = adb_identifier
         self.receiver_name = receiver_name
         self.television_ip = television_ip
 
     @Slot()
     def run(self):
-        if self.television_ip:
-            online, message = (
-                NetworkService.ping_device(
-                    self.television_ip,
-                    timeout_seconds=2,
-                )
-            )
-
-            if not online:
-                self.finished.emit(
-                    False,
-                    (
-                        "La televisión no respondió "
-                        "en la red.\n\n"
-                        f"{message}"
-                    ),
-                    self.card,
-                )
-                return
-
         cast_service = CastService()
 
-        success, message = (
-            cast_service.start_casting(
-                device_identifier=(
-                    self.adb_identifier
-                ),
-                receiver_name=(
-                    self.receiver_name
-                ),
+        if self.action == "start":
+            if self.television_ip:
+                online, message = (
+                    NetworkService.ping_device(
+                        self.television_ip,
+                        timeout_seconds=2,
+                    )
+                )
+
+                if not online:
+                    self.finished.emit(
+                        False,
+                        (
+                            "La televisión no respondió "
+                            "en la red.\n\n"
+                            f"{message}"
+                        ),
+                        self.card,
+                        self.action,
+                    )
+                    return
+
+            success, message = (
+                cast_service.start_casting(
+                    device_identifier=(
+                        self.adb_identifier
+                    ),
+                    receiver_name=(
+                        self.receiver_name
+                    ),
+                )
             )
-        )
+
+        elif self.action == "stop":
+            success, message = (
+                cast_service.stop_casting(
+                    device_identifier=(
+                        self.adb_identifier
+                    ),
+                )
+            )
+
+        else:
+            success = False
+            message = (
+                "La operación de transmisión "
+                "no es válida."
+            )
 
         self.finished.emit(
             success,
             message,
             self.card,
+            self.action,
         )
 
 
@@ -224,6 +246,10 @@ class Dashboard(QWidget):
 
             card.cast_requested.connect(
                 self.start_casting
+            )
+
+            card.stop_cast_requested.connect(
+                self.stop_casting
             )
 
         stations_grid.addWidget(
@@ -420,6 +446,81 @@ class Dashboard(QWidget):
                 ),
             )
 
+    def create_cast_thread(
+        self,
+        card: StationCard,
+        station_number: int,
+        action: str,
+        adb_identifier: str,
+        receiver_name: str = "",
+        television_ip: str = "",
+    ) -> bool:
+        if station_number in self.cast_threads:
+            QMessageBox.information(
+                self,
+                "Operación en proceso",
+                (
+                    "Esta estación ya está realizando "
+                    "una operación de transmisión."
+                ),
+            )
+            return False
+
+        thread = QThread(
+            self
+        )
+
+        worker = CastWorker(
+            card=card,
+            action=action,
+            adb_identifier=adb_identifier,
+            receiver_name=receiver_name,
+            television_ip=television_ip,
+        )
+
+        worker.moveToThread(
+            thread
+        )
+
+        thread.started.connect(
+            worker.run
+        )
+
+        worker.finished.connect(
+            self.cast_action_finished
+        )
+
+        worker.finished.connect(
+            thread.quit
+        )
+
+        worker.finished.connect(
+            worker.deleteLater
+        )
+
+        thread.finished.connect(
+            thread.deleteLater
+        )
+
+        thread.finished.connect(
+            lambda number=station_number:
+            self.cast_threads.pop(
+                number,
+                None,
+            )
+        )
+
+        self.cast_threads[
+            station_number
+        ] = {
+            "thread": thread,
+            "worker": worker,
+        }
+
+        thread.start()
+
+        return True
+
     def start_casting(
         self,
         card: StationCard,
@@ -490,95 +591,103 @@ class Dashboard(QWidget):
             )
             return
 
-        if station_number in self.cast_threads:
-            QMessageBox.information(
-                self,
-                "Transmisión en proceso",
-                (
-                    f"{station_name} ya está "
-                    "intentando conectarse."
-                ),
-            )
-            return
-
         card.cast_connecting()
 
-        thread = QThread(
-            self
-        )
-
-        worker = CastWorker(
+        created = self.create_cast_thread(
             card=card,
+            station_number=station_number,
+            action="start",
             adb_identifier=adb_identifier,
             receiver_name=receiver_name,
             television_ip=television_ip,
         )
 
-        worker.moveToThread(
-            thread
-        )
+        if not created:
+            card.cast_failed()
 
-        thread.started.connect(
-            worker.run
-        )
+    def stop_casting(
+        self,
+        card: StationCard,
+        station_number: int,
+        station_name: str,
+        adb_identifier: str,
+    ):
+        if not adb_identifier:
+            card.stop_cast_failed()
 
-        worker.finished.connect(
-            self.cast_finished
-        )
-
-        worker.finished.connect(
-            thread.quit
-        )
-
-        worker.finished.connect(
-            worker.deleteLater
-        )
-
-        thread.finished.connect(
-            thread.deleteLater
-        )
-
-        thread.finished.connect(
-            lambda number=station_number:
-            self.cast_threads.pop(
-                number,
-                None,
+            QMessageBox.warning(
+                self,
+                "Meta desconectada",
+                (
+                    f"{station_name} no está "
+                    "conectada por ADB."
+                ),
             )
+            return
+
+        card.cast_stopping()
+
+        created = self.create_cast_thread(
+            card=card,
+            station_number=station_number,
+            action="stop",
+            adb_identifier=adb_identifier,
         )
 
-        self.cast_threads[
-            station_number
-        ] = {
-            "thread": thread,
-            "worker": worker,
-        }
+        if not created:
+            card.stop_cast_failed()
 
-        thread.start()
-
-    @Slot(bool, str, object)
-    def cast_finished(
+    @Slot(
+        bool,
+        str,
+        object,
+        str,
+    )
+    def cast_action_finished(
         self,
         success: bool,
         message: str,
         card: StationCard,
+        action: str,
     ):
-        if success:
-            card.cast_started()
+        if action == "start":
+            if success:
+                card.cast_started()
 
-            QMessageBox.information(
+                QMessageBox.information(
+                    self,
+                    "Transmisión iniciada",
+                    message,
+                )
+                return
+
+            card.cast_failed()
+
+            QMessageBox.warning(
                 self,
-                "Transmisión iniciada",
+                "No se pudo transmitir",
                 message,
             )
             return
 
-        card.cast_failed()
+        if action == "stop":
+            if success:
+                card.cast_stopped()
 
-        QMessageBox.warning(
-            self,
-            "No se pudo transmitir",
-            message,
-        )
+                QMessageBox.information(
+                    self,
+                    "Transmisión detenida",
+                    message,
+                )
+                return
+
+            card.stop_cast_failed()
+
+            QMessageBox.warning(
+                self,
+                "No se pudo detener",
+                message,
+            )
 
     def launch_game(
         self,

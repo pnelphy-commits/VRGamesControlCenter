@@ -14,11 +14,35 @@ from PySide6.QtWidgets import (
 
 
 class StationCard(QFrame):
-    launch_requested = Signal(object, str, str)
-    finish_requested = Signal(object, str)
-    cast_requested = Signal(object, int, str, str)
+    launch_requested = Signal(
+        object,
+        str,
+        str,
+    )
 
-    def __init__(self, station_name: str):
+    finish_requested = Signal(
+        object,
+        str,
+    )
+
+    cast_requested = Signal(
+        object,
+        int,
+        str,
+        str,
+    )
+
+    stop_cast_requested = Signal(
+        object,
+        int,
+        str,
+        str,
+    )
+
+    def __init__(
+        self,
+        station_name: str,
+    ):
         super().__init__()
 
         self.station_name = station_name
@@ -31,9 +55,12 @@ class StationCard(QFrame):
 
         self.device_serial = ""
         self.device_connected = False
+
         self.games = []
         self.active_component = ""
+
         self.cast_in_progress = False
+        self.is_casting = False
 
         self.selected_minutes = 15
 
@@ -48,8 +75,14 @@ class StationCard(QFrame):
             self.update_timer
         )
 
-        self.setMinimumSize(380, 410)
-        self.setMaximumWidth(550)
+        self.setMinimumSize(
+            380,
+            455,
+        )
+
+        self.setMaximumWidth(
+            550
+        )
 
         self.setSizePolicy(
             QSizePolicy.Policy.Expanding,
@@ -93,7 +126,7 @@ class StationCard(QFrame):
                 border-radius: 8px;
                 min-height: 40px;
                 padding: 6px 10px;
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: bold;
             }
 
@@ -124,11 +157,18 @@ class StationCard(QFrame):
 
             QPushButton#castButton {
                 background-color: #1677FF;
-                color: white;
             }
 
             QPushButton#castButton:hover {
                 background-color: #3190FF;
+            }
+
+            QPushButton#stopCastButton {
+                background-color: #D35400;
+            }
+
+            QPushButton#stopCastButton:hover {
+                background-color: #E67E22;
             }
             """
         )
@@ -142,16 +182,19 @@ class StationCard(QFrame):
             18,
         )
 
-        main_layout.setSpacing(11)
+        main_layout.setSpacing(10)
 
-        title = QLabel(station_name)
+        title = QLabel(
+            station_name
+        )
 
         title.setAlignment(
             Qt.AlignmentFlag.AlignCenter
         )
 
         title.setStyleSheet(
-            "font-size: 22px; font-weight: bold;"
+            "font-size: 22px; "
+            "font-weight: bold;"
         )
 
         self.connection_label = QLabel(
@@ -162,7 +205,9 @@ class StationCard(QFrame):
             Qt.AlignmentFlag.AlignCenter
         )
 
-        self.battery_label = QLabel("🔋 --%")
+        self.battery_label = QLabel(
+            "🔋 --%"
+        )
 
         self.battery_label.setAlignment(
             Qt.AlignmentFlag.AlignCenter
@@ -179,7 +224,9 @@ class StationCard(QFrame):
             "#8992A9",
         )
 
-        game_label = QLabel("JUEGO")
+        game_label = QLabel(
+            "JUEGO"
+        )
 
         game_label.setAlignment(
             Qt.AlignmentFlag.AlignCenter
@@ -213,7 +260,11 @@ class StationCard(QFrame):
         time_buttons_layout = QHBoxLayout()
         time_buttons_layout.setSpacing(10)
 
-        for minutes in (10, 15, 30):
+        for minutes in (
+            10,
+            15,
+            30,
+        ):
             button = QPushButton(
                 f"{minutes} min"
             )
@@ -228,8 +279,8 @@ class StationCard(QFrame):
                 button
             )
 
-        controls_layout = QHBoxLayout()
-        controls_layout.setSpacing(10)
+        session_controls_layout = QHBoxLayout()
+        session_controls_layout.setSpacing(10)
 
         self.start_button = QPushButton(
             "INICIAR"
@@ -255,13 +306,16 @@ class StationCard(QFrame):
             self.request_finish_session
         )
 
-        controls_layout.addWidget(
+        session_controls_layout.addWidget(
             self.start_button
         )
 
-        controls_layout.addWidget(
+        session_controls_layout.addWidget(
             self.finish_button
         )
+
+        cast_controls_layout = QHBoxLayout()
+        cast_controls_layout.setSpacing(10)
 
         self.cast_button = QPushButton(
             "TRANSMITIR"
@@ -275,7 +329,29 @@ class StationCard(QFrame):
             self.request_casting
         )
 
-        main_layout.addWidget(title)
+        self.stop_cast_button = QPushButton(
+            "DETENER TRANSMISIÓN"
+        )
+
+        self.stop_cast_button.setObjectName(
+            "stopCastButton"
+        )
+
+        self.stop_cast_button.clicked.connect(
+            self.request_stop_casting
+        )
+
+        cast_controls_layout.addWidget(
+            self.cast_button
+        )
+
+        cast_controls_layout.addWidget(
+            self.stop_cast_button
+        )
+
+        main_layout.addWidget(
+            title
+        )
 
         main_layout.addWidget(
             self.connection_label
@@ -289,7 +365,9 @@ class StationCard(QFrame):
             self.session_label
         )
 
-        main_layout.addWidget(game_label)
+        main_layout.addWidget(
+            game_label
+        )
 
         main_layout.addWidget(
             self.game_selector
@@ -304,14 +382,17 @@ class StationCard(QFrame):
         )
 
         main_layout.addLayout(
-            controls_layout
+            session_controls_layout
         )
 
-        main_layout.addWidget(
-            self.cast_button
+        main_layout.addLayout(
+            cast_controls_layout
         )
 
-        self.update_device_status(False)
+        self.update_device_status(
+            False
+        )
+
         self.refresh_time_display()
 
     @staticmethod
@@ -324,7 +405,9 @@ class StationCard(QFrame):
         )
 
         if match:
-            return int(match.group(1))
+            return int(
+                match.group(1)
+            )
 
         return 0
 
@@ -389,6 +472,17 @@ class StationCard(QFrame):
 
             self.update_games([])
 
+            self.cast_in_progress = False
+            self.is_casting = False
+
+            self.cast_button.setText(
+                "TRANSMITIR"
+            )
+
+            self.stop_cast_button.setText(
+                "DETENER TRANSMISIÓN"
+            )
+
         self.refresh_controls()
 
     def update_games(
@@ -401,7 +495,10 @@ class StationCard(QFrame):
 
         self.games = games
 
-        self.game_selector.blockSignals(True)
+        self.game_selector.blockSignals(
+            True
+        )
+
         self.game_selector.clear()
 
         if not games:
@@ -429,35 +526,54 @@ class StationCard(QFrame):
                         index
                     )
 
-        self.game_selector.blockSignals(False)
+        self.game_selector.blockSignals(
+            False
+        )
 
     def refresh_controls(self):
-        has_games = bool(self.games)
+        has_games = bool(
+            self.games
+        )
+
+        game_operation_running = (
+            self.start_button.text()
+            == "ABRIENDO..."
+        )
+
+        finish_operation_running = (
+            self.finish_button.text()
+            == "FINALIZANDO..."
+        )
 
         self.game_selector.setEnabled(
             self.device_connected
             and has_games
+            and not game_operation_running
+            and not finish_operation_running
         )
 
-        if (
-            self.start_button.text()
-            != "ABRIENDO..."
-        ):
-            self.start_button.setEnabled(
-                self.device_connected
-                and has_games
-            )
+        self.start_button.setEnabled(
+            self.device_connected
+            and has_games
+            and not game_operation_running
+            and not finish_operation_running
+        )
 
-        if (
-            self.finish_button.text()
-            != "FINALIZANDO..."
-        ):
-            self.finish_button.setEnabled(
-                self.device_connected
-            )
+        self.finish_button.setEnabled(
+            self.device_connected
+            and not finish_operation_running
+        )
 
         self.cast_button.setEnabled(
-            not self.cast_in_progress
+            self.device_connected
+            and not self.cast_in_progress
+            and not self.is_casting
+        )
+
+        self.stop_cast_button.setEnabled(
+            self.device_connected
+            and not self.cast_in_progress
+            and self.is_casting
         )
 
     def start_or_pause(self):
@@ -475,6 +591,8 @@ class StationCard(QFrame):
                 "SESIÓN PAUSADA",
                 "#F5B041",
             )
+
+            self.refresh_controls()
             return
 
         if (
@@ -493,11 +611,16 @@ class StationCard(QFrame):
 
         self.active_component = component
 
-        self.start_button.setEnabled(False)
-
         self.start_button.setText(
             "ABRIENDO..."
         )
+
+        self.set_session_status(
+            "ABRIENDO JUEGO...",
+            "#F5B041",
+        )
+
+        self.refresh_controls()
 
         self.launch_requested.emit(
             self,
@@ -513,21 +636,26 @@ class StationCard(QFrame):
 
         self.timer.start()
 
-        self.start_button.setEnabled(True)
-
         self.start_button.setText(
             "PAUSAR"
         )
 
-        self.set_session_status(
-            "SESIÓN EN CURSO",
-            "#FF5C77",
-        )
+        if self.is_casting:
+            self.set_session_status(
+                "● JUGANDO Y TRANSMITIENDO",
+                "#25F29A",
+            )
+
+        else:
+            self.set_session_status(
+                "SESIÓN EN CURSO",
+                "#FF5C77",
+            )
+
+        self.refresh_controls()
 
     def launch_failed(self):
         self.active_component = ""
-
-        self.start_button.setEnabled(True)
 
         self.start_button.setText(
             "INICIAR"
@@ -538,14 +666,17 @@ class StationCard(QFrame):
             "#FF5C77",
         )
 
+        self.refresh_controls()
+
     def request_finish_session(self):
         if not self.device_connected:
             return
 
         self.timer.stop()
 
-        self.start_button.setEnabled(False)
-        self.finish_button.setEnabled(False)
+        self.start_button.setEnabled(
+            False
+        )
 
         self.finish_button.setText(
             "FINALIZANDO..."
@@ -555,6 +686,8 @@ class StationCard(QFrame):
             "CERRANDO APLICACIONES...",
             "#F5B041",
         )
+
+        self.refresh_controls()
 
         self.finish_requested.emit(
             self,
@@ -576,10 +709,17 @@ class StationCard(QFrame):
             "FINALIZAR"
         )
 
-        self.set_session_status(
-            "ESTACIÓN LIBRE",
-            "#8992A9",
-        )
+        if self.is_casting:
+            self.set_session_status(
+                "● TRANSMITIENDO",
+                "#25F29A",
+            )
+
+        else:
+            self.set_session_status(
+                "ESTACIÓN LIBRE",
+                "#8992A9",
+            )
 
         self.refresh_time_display()
         self.refresh_controls()
@@ -604,6 +744,14 @@ class StationCard(QFrame):
         self,
         minutes: int,
     ):
+        if (
+            self.start_button.text()
+            == "ABRIENDO..."
+            or self.finish_button.text()
+            == "FINALIZANDO..."
+        ):
+            return
+
         self.timer.stop()
 
         self.selected_minutes = minutes
@@ -618,10 +766,17 @@ class StationCard(QFrame):
             "INICIAR"
         )
 
-        self.set_session_status(
-            "ESTACIÓN LIBRE",
-            "#8992A9",
-        )
+        if self.is_casting:
+            self.set_session_status(
+                "● TRANSMITIENDO",
+                "#25F29A",
+            )
+
+        else:
+            self.set_session_status(
+                "ESTACIÓN LIBRE",
+                "#8992A9",
+            )
 
         self.refresh_time_display()
         self.refresh_controls()
@@ -629,6 +784,7 @@ class StationCard(QFrame):
     def update_timer(self):
         if self.remaining_seconds > 0:
             self.remaining_seconds -= 1
+
             self.refresh_time_display()
 
         if self.remaining_seconds == 0:
@@ -644,6 +800,7 @@ class StationCard(QFrame):
             )
 
             self.refresh_controls()
+
             QApplication.beep()
 
     def refresh_time_display(self):
@@ -661,7 +818,9 @@ class StationCard(QFrame):
         text: str,
         color: str,
     ):
-        self.session_label.setText(text)
+        self.session_label.setText(
+            text
+        )
 
         self.session_label.setStyleSheet(
             f"color: {color}; "
@@ -670,10 +829,29 @@ class StationCard(QFrame):
         )
 
     def request_casting(self):
-        if self.cast_in_progress:
+        if (
+            not self.device_connected
+            or self.cast_in_progress
+            or self.is_casting
+        ):
             return
 
         self.cast_requested.emit(
+            self,
+            self.station_number,
+            self.station_name,
+            self.device_serial,
+        )
+
+    def request_stop_casting(self):
+        if (
+            not self.device_connected
+            or self.cast_in_progress
+            or not self.is_casting
+        ):
+            return
+
+        self.stop_cast_requested.emit(
             self,
             self.station_number,
             self.station_name,
@@ -687,37 +865,108 @@ class StationCard(QFrame):
             "CONECTANDO..."
         )
 
-        self.cast_button.setEnabled(False)
-
         self.set_session_status(
             "CONECTANDO A LA TV...",
             "#F5B041",
         )
 
+        self.refresh_controls()
+
     def cast_started(self):
         self.cast_in_progress = False
+        self.is_casting = True
 
         self.cast_button.setText(
-            "TRANSMITIR DE NUEVO"
+            "TRANSMITIENDO"
         )
 
-        self.cast_button.setEnabled(True)
-
-        self.set_session_status(
-            "● TRANSMITIENDO",
-            "#25F29A",
+        self.stop_cast_button.setText(
+            "DETENER TRANSMISIÓN"
         )
+
+        if self.timer.isActive():
+            self.set_session_status(
+                "● JUGANDO Y TRANSMITIENDO",
+                "#25F29A",
+            )
+
+        else:
+            self.set_session_status(
+                "● TRANSMITIENDO",
+                "#25F29A",
+            )
+
+        self.refresh_controls()
 
     def cast_failed(self):
         self.cast_in_progress = False
+        self.is_casting = False
 
         self.cast_button.setText(
             "TRANSMITIR"
         )
 
-        self.cast_button.setEnabled(True)
+        self.stop_cast_button.setText(
+            "DETENER TRANSMISIÓN"
+        )
 
         self.set_session_status(
             "ERROR DE TRANSMISIÓN",
             "#FF4E6D",
         )
+
+        self.refresh_controls()
+
+    def cast_stopping(self):
+        self.cast_in_progress = True
+
+        self.stop_cast_button.setText(
+            "DETENIENDO..."
+        )
+
+        self.set_session_status(
+            "DETENIENDO TRANSMISIÓN...",
+            "#F5B041",
+        )
+
+        self.refresh_controls()
+
+    def cast_stopped(self):
+        self.cast_in_progress = False
+        self.is_casting = False
+
+        self.cast_button.setText(
+            "TRANSMITIR"
+        )
+
+        self.stop_cast_button.setText(
+            "DETENER TRANSMISIÓN"
+        )
+
+        if self.timer.isActive():
+            self.set_session_status(
+                "SESIÓN EN CURSO",
+                "#FF5C77",
+            )
+
+        else:
+            self.set_session_status(
+                "TRANSMISIÓN DETENIDA",
+                "#8992A9",
+            )
+
+        self.refresh_controls()
+
+    def stop_cast_failed(self):
+        self.cast_in_progress = False
+
+        self.stop_cast_button.setText(
+            "DETENER TRANSMISIÓN"
+        )
+
+        self.set_session_status(
+            "ERROR AL DETENER TRANSMISIÓN",
+            "#FF4E6D",
+        )
+
+        self.refresh_controls()

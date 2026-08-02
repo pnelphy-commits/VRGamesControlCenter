@@ -83,7 +83,8 @@ class CastService:
 
         except OSError as error:
             self.last_error = (
-                "No fue posible consultar la Meta Quest:\n"
+                "No fue posible consultar "
+                "la Meta Quest:\n"
                 f"{error}"
             )
             return False
@@ -94,13 +95,12 @@ class CastService:
         ):
             return True
 
-        error_message = (
+        self.last_error = (
             result.stderr.strip()
             or result.stdout.strip()
             or "La Meta Quest no está disponible por ADB."
         )
 
-        self.last_error = error_message
         return False
 
     def wake_device(
@@ -320,16 +320,12 @@ class CastService:
                 )
                 == "node"
             ):
-                clickable = (
-                    current_node.getAttribute(
-                        "clickable"
-                    )
+                clickable = current_node.getAttribute(
+                    "clickable"
                 )
 
-                enabled = (
-                    current_node.getAttribute(
-                        "enabled"
-                    )
+                enabled = current_node.getAttribute(
+                    "enabled"
                 )
 
                 if (
@@ -389,12 +385,10 @@ class CastService:
             if clickable_node is None:
                 continue
 
-            bounds = clickable_node.getAttribute(
-                "bounds"
-            )
-
             coordinates = self.parse_bounds(
-                bounds
+                clickable_node.getAttribute(
+                    "bounds"
+                )
             )
 
             if coordinates:
@@ -590,7 +584,9 @@ class CastService:
             device_identifier.strip()
         )
 
-        receiver_name = receiver_name.strip()
+        receiver_name = (
+            receiver_name.strip()
+        )
 
         if not device_identifier:
             return (
@@ -631,8 +627,10 @@ class CastService:
         ):
             return (
                 False,
-                "La pantalla de transmisión "
-                "no apareció en la Meta Quest.",
+                (
+                    "La pantalla de transmisión "
+                    "no apareció en la Meta Quest."
+                ),
             )
 
         receiver_coordinates = (
@@ -681,7 +679,9 @@ class CastService:
                 "El botón Siguiente no se habilitó.",
             )
 
-        next_x, next_y = next_coordinates
+        next_x, next_y = (
+            next_coordinates
+        )
 
         if not self.tap(
             device_identifier,
@@ -702,3 +702,69 @@ class CastService:
                 f"en {receiver_name}."
             ),
         )
+
+    def stop_casting(
+        self,
+        device_identifier: str,
+    ) -> tuple[bool, str]:
+        self.last_error = ""
+
+        device_identifier = device_identifier.strip()
+
+        if not device_identifier:
+            return (
+                False,
+                "La Meta Quest no está conectada.",
+            )
+
+        if not self.verify_adb():
+            return (
+                False,
+                self.last_error,
+            )
+
+        if not self.verify_device(
+            device_identifier
+        ):
+            return (
+                False,
+                self.last_error,
+            )
+
+        try:
+            if not self.open_casting_dialog(
+                device_identifier
+            ):
+                return (
+                    False,
+                    self.last_error
+                    or (
+                        "No se pudo abrir el control "
+                        "de transmisión."
+                    ),
+                )
+
+            time.sleep(6)
+
+            return (
+                True,
+                "La transmisión fue detenida correctamente.",
+            )
+
+        except subprocess.TimeoutExpired:
+            return (
+                False,
+                (
+                    "Se agotó el tiempo intentando "
+                    "detener la transmisión."
+                ),
+            )
+
+        except OSError as error:
+            return (
+                False,
+                (
+                    "No se pudo detener la transmisión:\n"
+                    f"{error}"
+                ),
+            )
