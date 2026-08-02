@@ -17,6 +17,9 @@ class CastService:
 
     CAST_ACTION = "START_CASTING"
 
+    RECEIVER_FALLBACK_COORDINATES = (240, 383)
+    NEXT_FALLBACK_COORDINATES = (240, 637)
+
     def __init__(self):
         project_root = Path(__file__).resolve().parents[2]
 
@@ -107,12 +110,6 @@ class CastService:
         self,
         device_identifier: str,
     ):
-        """
-        Despierta la Meta Quest sin enviarla al menú principal.
-
-        No se utiliza KEYCODE_HOME porque ese comando
-        saca al jugador del juego activo.
-        """
         try:
             self.run_adb(
                 device_identifier,
@@ -144,7 +141,7 @@ class CastService:
                     "force-stop",
                     self.CAST_PACKAGE,
                 ],
-                timeout=15,
+                timeout=10,
             )
 
         except (
@@ -153,7 +150,7 @@ class CastService:
         ):
             pass
 
-        time.sleep(1.5)
+        time.sleep(0.12)
 
     def open_casting_dialog(
         self,
@@ -172,7 +169,7 @@ class CastService:
                     "-n",
                     self.CAST_ACTIVITY,
                 ],
-                timeout=25,
+                timeout=20,
             )
 
         except subprocess.TimeoutExpired:
@@ -231,7 +228,7 @@ class CastService:
                     "--compressed",
                     self.REMOTE_XML_PATH,
                 ],
-                timeout=20,
+                timeout=10,
             )
 
             if dump_result.returncode != 0:
@@ -244,7 +241,7 @@ class CastService:
                     "cat",
                     self.REMOTE_XML_PATH,
                 ],
-                timeout=20,
+                timeout=10,
             )
 
             try:
@@ -255,7 +252,7 @@ class CastService:
                         "rm",
                         self.REMOTE_XML_PATH,
                     ],
-                    timeout=10,
+                    timeout=5,
                 )
 
             except (
@@ -434,6 +431,7 @@ class CastService:
                     "oc_dialog_primary_button"
                 )
                 or text == "siguiente"
+                or text == "next"
             )
 
             if not is_next_button:
@@ -470,7 +468,7 @@ class CastService:
                     str(x_coordinate),
                     str(y_coordinate),
                 ],
-                timeout=10,
+                timeout=8,
             )
 
         except (
@@ -480,93 +478,6 @@ class CastService:
             return False
 
         return result.returncode == 0
-
-    def wait_for_cast_dialog(
-        self,
-        device_identifier: str,
-        timeout_seconds: int = 15,
-    ) -> bool:
-        end_time = (
-            time.monotonic()
-            + timeout_seconds
-        )
-
-        while time.monotonic() < end_time:
-            xml_content = self.dump_ui_xml(
-                device_identifier
-            )
-
-            if (
-                "Transmitir en" in xml_content
-                or (
-                    "com.oculus.metacam:id/"
-                    "local_stream_start_dialog_layout"
-                )
-                in xml_content
-            ):
-                return True
-
-            time.sleep(1)
-
-        return False
-
-    def wait_for_receiver(
-        self,
-        device_identifier: str,
-        receiver_name: str,
-        timeout_seconds: int = 40,
-    ) -> tuple[int, int] | None:
-        end_time = (
-            time.monotonic()
-            + timeout_seconds
-        )
-
-        while time.monotonic() < end_time:
-            xml_content = self.dump_ui_xml(
-                device_identifier
-            )
-
-            coordinates = (
-                self.find_receiver_coordinates(
-                    xml_content,
-                    receiver_name,
-                )
-            )
-
-            if coordinates:
-                return coordinates
-
-            time.sleep(0.5)
-
-        return None
-
-    def wait_for_next_button(
-        self,
-        device_identifier: str,
-        timeout_seconds: int = 15,
-    ) -> tuple[int, int] | None:
-        end_time = (
-            time.monotonic()
-            + timeout_seconds
-        )
-
-        while time.monotonic() < end_time:
-            xml_content = self.dump_ui_xml(
-                device_identifier
-            )
-
-            coordinates = (
-                self.find_next_button_coordinates(
-                    xml_content
-                )
-            )
-
-            if coordinates:
-                return coordinates
-
-            time.sleep(1)
-
-        return None
 
     def start_casting(
         self,
@@ -616,24 +527,14 @@ class CastService:
         ):
             return False, self.last_error
 
-        # La ventana sí puede estar visible aunque UIAutomator
-        # no reconozca el título. Esperamos un poco y buscamos
-        # directamente la TV configurada.
-        time.sleep(0.5)
+        # Espera mínima para que aparezca la lista de TVs.
+        time.sleep(0.8)
 
+        # Selecciona la TV directamente por coordenadas.
+        # Evita UIAutomator, que era la causa principal de la demora.
         receiver_coordinates = (
-            self.wait_for_receiver(
-                device_identifier,
-                receiver_name,
-                timeout_seconds=1,
-            )
+            self.RECEIVER_FALLBACK_COORDINATES
         )
-
-        if not receiver_coordinates:
-            # Mientras el juego está activo, UIAutomator puede no leer
-            # el nombre de la TV aunque la ventana esté visible.
-            # Usamos la posición comprobada de la primera TV.
-            receiver_coordinates = (240, 383)
 
         receiver_x, receiver_y = (
             receiver_coordinates
@@ -649,16 +550,13 @@ class CastService:
                 "No se pudo seleccionar la TV.",
             )
 
-        next_coordinates = (
-            self.wait_for_next_button(
-                device_identifier,
-                timeout_seconds=5,
-            )
-        )
+        # Espera mínima para que se habilite Siguiente.
+        time.sleep(0.5)
 
-        if not next_coordinates:
-            # Posición comprobada del botón Siguiente.
-            next_coordinates = (240, 637)
+        # Pulsa Siguiente directamente por coordenadas.
+        next_coordinates = (
+            self.NEXT_FALLBACK_COORDINATES
+        )
 
         next_x, next_y = (
             next_coordinates
@@ -674,7 +572,7 @@ class CastService:
                 "No se pudo confirmar la transmisión.",
             )
 
-        time.sleep(1)
+        time.sleep(0.65)
 
         return (
             True,
@@ -690,7 +588,9 @@ class CastService:
     ) -> tuple[bool, str]:
         self.last_error = ""
 
-        device_identifier = device_identifier.strip()
+        device_identifier = (
+            device_identifier.strip()
+        )
 
         if not device_identifier:
             return (
@@ -713,8 +613,6 @@ class CastService:
             )
 
         try:
-            # Al abrir nuevamente el control,
-            # Meta detiene la transmisión activa.
             if not self.open_casting_dialog(
                 device_identifier
             ):
@@ -727,11 +625,8 @@ class CastService:
                     ),
                 )
 
-            # Esperamos a que termine el casting.
-            time.sleep(0.3)
+            time.sleep(0.30)
 
-            # Cerramos completamente la ventana
-            # de Cámara/Transmisión.
             result = self.run_adb(
                 device_identifier,
                 [
@@ -739,60 +634,6 @@ class CastService:
                     "am",
                     "force-stop",
                     self.CAST_PACKAGE,
-                ],
-                timeout=15,
-            )
-
-            if result.returncode != 0:
-                return (
-                    False,
-                    (
-                        result.stderr.strip()
-                        or result.stdout.strip()
-                        or (
-                            "La transmisión se detuvo, "
-                            "pero no se pudo cerrar "
-                            "la ventana."
-                        )
-                    ),
-                )
-
-            time.sleep(1)
-
-            return (
-                True,
-                "La transmisión fue detenida correctamente.",
-            )
-
-        except subprocess.TimeoutExpired:
-            return (
-                False,
-                (
-                    "Se agotó el tiempo intentando "
-                    "detener la transmisión."
-                ),
-            )
-
-        except OSError as error:
-            return (
-                False,
-                (
-                    "No se pudo detener la transmisión:\n"
-                    f"{error}"
-                ),
-            )
-            # Esperamos a que Meta cierre el casting.
-            time.sleep(6)
-
-            # Cerramos la ventana que pregunta
-            # dónde transmitir.
-            result = self.run_adb(
-                device_identifier,
-                [
-                    "shell",
-                    "input",
-                    "keyevent",
-                    "KEYCODE_BACK",
                 ],
                 timeout=10,
             )
@@ -811,31 +652,7 @@ class CastService:
                     ),
                 )
 
-            time.sleep(1)
-
-            return (
-                True,
-                "La transmisión fue detenida correctamente.",
-            )
-
-        except subprocess.TimeoutExpired:
-            return (
-                False,
-                (
-                    "Se agotó el tiempo intentando "
-                    "detener la transmisión."
-                ),
-            )
-
-        except OSError as error:
-            return (
-                False,
-                (
-                    "No se pudo detener la transmisión:\n"
-                    f"{error}"
-                ),
-            )
-            time.sleep(6)
+            time.sleep(0.15)
 
             return (
                 True,
